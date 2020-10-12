@@ -1,41 +1,39 @@
-CREATE TABLE companies
-(
-    handle text PRIMARY KEY,
-    name text NOT NULL,
-    num_employees integer NOT NULL,
-    description text NOT NULL,
-    logo_url text NOT NULL
-);
 
-CREATE TABLE jobs
-(
-    id serial PRIMARY KEY,
-    title text NOT NULL,
-    salary float NOT NULL,
-    equity float NOT NULL CHECK (equity BETWEEN 0 AND 1),
-    company_handle text NOT NULL REFERENCES companies ON DELETE CASCADE,
-    date_posted timestamptz NOT NULL DEFAULT current_timestamp
-);
-
-CREATE TABLE users
+CREATE TABLE teachers
 (
     username text PRIMARY KEY,
     password text NOT NULL,
-    first_name text NOT NULL,
-    last_name text NOT NULL,
+    full_name text NOT NULL,
+    email text NOT NULL UNIQUE
+);
+CREATE TABLE students
+(
+    username text PRIMARY KEY,
+    password text NOT NULL,
+    full_name text NOT NULL,
     email text NOT NULL UNIQUE,
-    photo_url text,
-    is_admin boolean NOT NULL DEFAULT false
+    teacher_username REFERENCES teachers
 );
 
-CREATE TYPE status AS ENUM
-('interested', 'applied', 'accepted', 'rejected');
-
-CREATE TABLE applications
+CREATE TABLE lessons
 (
     id serial PRIMARY KEY,
-    username text REFERENCES users ON DELETE CASCADE,
-    job_id integer REFERENCES jobs ON DELETE CASCADE,
-    state status,
-    created_at timestamptz NOT NULL DEFAULT current_timestamp
+    date timestamptz NOT NULL,
+    teacher_username text REFERENCES teachers ON DELETE CASCADE,
+    student_username text REFERENCES students ON DELETE CASCADE, 
+);
+
+CREATE TABLE notes
+(
+    id serial PRIMARY KEY, 
+    lesson_id integer REFERENCES lessons ON DELETE CASCADE,
+    note text NOT NULL
+);
+
+CREATE TABLE homework
+(
+    id serial PRIMARY KEY, 
+    lesson_id integer REFERENCES lessons ON DELETE CASCADE,
+    assignment text NOT NULL, 
+    completed boolean NOT NULL
 );

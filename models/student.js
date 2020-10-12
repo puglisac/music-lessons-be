@@ -19,7 +19,8 @@ class Student {
             username,
             password,
             full_name,
-            email, teacher_username)
+            email, 
+            teacher_username)
           VALUES ($1, $2, $3, $4)
           RETURNING username, full_name, email`,
 			[ username, hashedPassword, full_name, email, teacher_username]

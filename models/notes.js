@@ -2,10 +2,10 @@ const db = require("../db");
 const ExpressError = require("../helpers/expressError");
 
 class Note {
-    constructor(id, lesson_id, text) {
+    constructor(id, lesson_id, note) {
         this.id=id
         this.lesson_id = lesson_id;
-        this.text = text;
+        this.note = note;
     }
 
 
@@ -17,7 +17,7 @@ class Note {
         if (result.rows.length === 0) {
             throw new ExpressError(`No notes`, 404)
         };
-        return result.rows.map(n => new Note(n.id, n.lesson_id, n.text));
+        return result.rows.map(n => new Note(n.id, n.lesson_id, n.note));
     }
 
     // static async search(str = "", min = 0, equity = 0) {
@@ -41,16 +41,16 @@ class Note {
         }
 
         let n = result.rows[0];
-        return new Note(n.id, n.lesson_id, n.text);
+        return new Note(n.id, n.lesson_id, n.note);
     }
 
     /** create a note: returns note */
 
-    static async create(lesson_id, text) {
+    static async create(lesson_id, note) {
         try {
-            const newLesson = await db.query(`INSERT INTO notes (lesson_id, text) VALUES ($1, $2) RETURNING id, lesson_id, text`, [lesson_id, text]);
+            const newLesson = await db.query(`INSERT INTO notes (lesson_id, note) VALUES ($1, $2) RETURNING id, lesson_id, note`, [lesson_id, note]);
             const n = newLesson.rows[0];
-            return new Note(n.id, n.lesson_id, n.text);
+            return new Note(n.id, n.lesson_id, n.note);
         } catch (e) {
             throw new Error("Something went wrong");
         }
@@ -61,7 +61,7 @@ class Note {
 
     async save() {
         await db.query(
-            `UPDATE notes SET text=$1 WHERE id = $2`, [this.date, this.text]);
+            `UPDATE notes SET note=$1 WHERE id = $2`, [this.date, this.note]);
     }
 
     /** delete note */
