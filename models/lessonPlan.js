@@ -2,7 +2,8 @@ const db = require("../db");
 const ExpressError = require("../helpers/expressError");
 
 class LessonPlan {
-    constructor(title, description, lesson_plan, teacher_username) {
+    constructor(id, title, description, lesson_plan, teacher_username) {
+        this.id=id
         this.title = title;
         this.description = description;
         this.lesson_plan = lesson_plan;
@@ -42,7 +43,7 @@ class LessonPlan {
         }
 
         let l = result.rows[0];
-        return new LessonPlan(l.id, l.title, l.description, l.teacher_username);
+        return new LessonPlan(l.id, l.title, l.description, l.lesson_plan, l.teacher_username);
     }
 
     /** create a lesson plan: returns lessonPlan */
@@ -51,7 +52,7 @@ class LessonPlan {
         try {
             const newLessonPlan = await db.query(`INSERT INTO lesson_plans (title, description, lesson_plan, teacher_username) VALUES ($1, $2, $3, $4) RETURNING id, title, description, lesson_plan, teacher_username`, [title, description, lesson_plan, teacher_username]);
             const l = newLessonPlan.rows[0];
-            return new Job(l.id, l.title, l.description, l.teacher_username);
+            return new LessonPlan(l.id, l.title, l.description, l.lesson_plan, l.teacher_username);
         } catch (e) {
             throw new Error("Something went wrong");
         }
