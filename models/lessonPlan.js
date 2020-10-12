@@ -19,7 +19,7 @@ class LessonPlan {
         if (result.rows.length === 0) {
             throw new ExpressError(`No Lesson Plans for ${teacher_username}`, 404)
         };
-        return result.rows.map(l => new LessonPlan(l.id, l.title, l.description, l.teacher_username));
+        return result.rows.map(lp => new LessonPlan(lp.id, lp.title, lp.description, lp.teacher_username));
     }
 
     // static async search(str = "", min = 0, equity = 0) {
@@ -39,11 +39,11 @@ class LessonPlan {
         const result = await db.query(
             `SELECT * FROM lesson_plans WHERE id = $1`, [id]);
         if (result.rows.length === 0) {
-            throw new ExpressError(`No such job with id: ${id}`, 404);
+            throw new ExpressError(`No such lesson plan with id: ${id}`, 404);
         }
 
-        let l = result.rows[0];
-        return new LessonPlan(l.id, l.title, l.description, l.lesson_plan, l.teacher_username);
+        let lp = result.rows[0];
+        return new LessonPlan(lp.id, lp.title, lp.description, lp.lesson_plan, lp.teacher_username);
     }
 
     /** create a lesson plan: returns lessonPlan */
@@ -51,8 +51,8 @@ class LessonPlan {
     static async create(title, description, lesson_plan, teacher_username) {
         try {
             const newLessonPlan = await db.query(`INSERT INTO lesson_plans (title, description, lesson_plan, teacher_username) VALUES ($1, $2, $3, $4) RETURNING id, title, description, lesson_plan, teacher_username`, [title, description, lesson_plan, teacher_username]);
-            const l = newLessonPlan.rows[0];
-            return new LessonPlan(l.id, l.title, l.description, l.lesson_plan, l.teacher_username);
+            const lp = newLessonPlan.rows[0];
+            return new LessonPlan(lp.id, lp.title, lp.description, lp.lesson_plan, lp.teacher_username);
         } catch (e) {
             throw new Error("Something went wrong");
         }
@@ -75,4 +75,4 @@ class LessonPlan {
 }
 
 
-module.exports = Job;
+module.exports = LessonPlan;
