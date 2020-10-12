@@ -40,7 +40,7 @@ class Teacher {
 		return await bcrypt.compare(password, teacher.password);
 	}
 
-	/** Get: get user by username **/
+	/** Get: get teacher by username **/
 
 	static async get(username) {
 		const teacher = await db.query(
