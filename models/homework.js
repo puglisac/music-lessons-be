@@ -74,4 +74,4 @@ class Homework {
 }
 
 
-module.exports = Note;
+module.exports = Homework;
