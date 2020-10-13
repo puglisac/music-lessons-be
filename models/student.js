@@ -7,9 +7,9 @@ class Student {
 	constructor(username, full_name, email, teacher_username) {
 		this.username = username;
 		this.full_name = full_name;
-        this.email = email;
-        this.teacher_username=this.teacher_username
-        
+		this.email = email;
+		this.teacher_username = this.teacher_username;
+
 	}
 
 	static async register(username, password, full_name, email, teacher_username) {
@@ -23,7 +23,7 @@ class Student {
             teacher_username)
           VALUES ($1, $2, $3, $4)
           RETURNING username, full_name, email`,
-			[ username, hashedPassword, full_name, email, teacher_username]
+			[username, hashedPassword, full_name, email, teacher_username]
 		);
 		return result.rows[0];
 	}
@@ -35,7 +35,7 @@ class Student {
 			`SELECT username, password 
        FROM students
        WHERE username = $1`,
-			[ username ]
+			[username]
 		);
 		const student = results.rows[0];
 
@@ -47,8 +47,8 @@ class Student {
 	static async get(username) {
 		const student = await db.query(
 			`
-    SELECT u.username, full_name, email, teacher_username, FROM students WHERE u.username = $1`,
-			[ username ]
+    SELECT username, full_name, email, teacher_username FROM students WHERE username = $1`,
+			[username]
 		);
 		if (!student.rows[0]) {
 			throw new ExpressError(`No such user: ${username}`, 404);
@@ -59,12 +59,12 @@ class Student {
 	}
 	async save() {
 		await db.query(
-			`UPDATE students SET full_name=$2, email=$3, WHERE username = $1`,
-			[ this.username, this.full_name, this.email ]
+			`UPDATE students SET full_name=$2, email=$3 WHERE username = $1`,
+			[this.username, this.full_name, this.email]
 		);
 	}
 	async remove() {
-		await db.query(`DELETE FROM students WHERE username = $1`, [ this.username ]);
+		await db.query(`DELETE FROM students WHERE username = $1`, [this.username]);
 	}
 }
 

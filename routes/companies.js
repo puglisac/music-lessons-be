@@ -1,6 +1,5 @@
 const express = require("express");
 const jsonValidate = require("../middleware/jsonValidate");
-const Company = require("../models/company");
 const companySchema = require("../schema/companySchema.json");
 const updateCompanySchema = require("../schema/updateCompanySchema.json");
 const { json } = require("express");
@@ -8,7 +7,7 @@ const router = new express.Router();
 const ExpressError = require("../helpers/expressError");
 const { ensureLoggedIn, ensureAdmin } = require("../middleware/auth");
 
-router.get("/", ensureLoggedIn, async function(req, res, next) {
+router.get("/", ensureLoggedIn, async function (req, res, next) {
 	try {
 		if (Object.keys(req.query).length != 0) {
 			const { search, min_employees, max_employees } = req.query;
@@ -24,7 +23,7 @@ router.get("/", ensureLoggedIn, async function(req, res, next) {
 
 /** get company by handle */
 
-router.get("/:handle", ensureLoggedIn, async function(req, res, next) {
+router.get("/:handle", ensureLoggedIn, async function (req, res, next) {
 	try {
 		let company = await Company.getById(req.params.handle);
 		return res.json({ company: company });
@@ -35,7 +34,7 @@ router.get("/:handle", ensureLoggedIn, async function(req, res, next) {
 
 /** create company */
 
-router.post("/", ensureAdmin, jsonValidate(companySchema), async function(req, res, next) {
+router.post("/", ensureAdmin, jsonValidate(companySchema), async function (req, res, next) {
 	try {
 		let newCompany = await Company.create(
 			req.body.handle,
@@ -52,7 +51,7 @@ router.post("/", ensureAdmin, jsonValidate(companySchema), async function(req, r
 
 /** delete company from {handle}; returns "deleted" */
 
-router.delete("/:handle", ensureAdmin, async function(req, res, next) {
+router.delete("/:handle", ensureAdmin, async function (req, res, next) {
 	try {
 		let company = await Company.getById(req.params.handle);
 		await company.remove();
@@ -64,7 +63,7 @@ router.delete("/:handle", ensureAdmin, async function(req, res, next) {
 
 /** updates a company */
 
-router.patch("/:handle", ensureAdmin, jsonValidate(updateCompanySchema), async function(req, res, next) {
+router.patch("/:handle", ensureAdmin, jsonValidate(updateCompanySchema), async function (req, res, next) {
 	try {
 		let company = await Company.getById(req.params.handle);
 		for (key in req.body) {

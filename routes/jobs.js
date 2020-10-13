@@ -1,5 +1,4 @@
 const express = require("express");
-const Job = require("../models/job");
 const Application = require("../models/application");
 const jsonValidate = require("../middleware/jsonValidate");
 const jobSchema = require("../schema/jobSchema.json");
@@ -11,7 +10,7 @@ const router = new express.Router();
 const ExpressError = require("../helpers/expressError");
 const { ensureLoggedIn, ensureAdmin } = require("../middleware/auth");
 
-router.get("/", ensureLoggedIn, async function(req, res, next) {
+router.get("/", ensureLoggedIn, async function (req, res, next) {
 	try {
 		if (Object.keys(req.query).length != 0) {
 			const { search, min_salary, min_equity } = req.query;
@@ -27,7 +26,7 @@ router.get("/", ensureLoggedIn, async function(req, res, next) {
 
 /** get job by id */
 
-router.get("/:id", ensureLoggedIn, async function(req, res, next) {
+router.get("/:id", ensureLoggedIn, async function (req, res, next) {
 	try {
 		let job = await Job.getById(req.params.id);
 		return res.json({ job: job });
@@ -38,7 +37,7 @@ router.get("/:id", ensureLoggedIn, async function(req, res, next) {
 
 /** create job */
 
-router.post("/", ensureAdmin, jsonValidate(jobSchema), async function(req, res, next) {
+router.post("/", ensureAdmin, jsonValidate(jobSchema), async function (req, res, next) {
 	try {
 		let newJob = await Job.create(req.body.title, req.body.salary, req.body.equity, req.body.company_handle);
 		return res.status(201).json({ job: newJob });
@@ -49,7 +48,7 @@ router.post("/", ensureAdmin, jsonValidate(jobSchema), async function(req, res, 
 
 /** delete job from {id}; returns "deleted" */
 
-router.delete("/:id", ensureAdmin, async function(req, res, next) {
+router.delete("/:id", ensureAdmin, async function (req, res, next) {
 	try {
 		let job = await Job.getById(req.params.id);
 		await job.remove();
@@ -61,7 +60,7 @@ router.delete("/:id", ensureAdmin, async function(req, res, next) {
 
 /** updates a job */
 
-router.patch("/:id", ensureAdmin, jsonValidate(updateJobSchema), async function(req, res, next) {
+router.patch("/:id", ensureAdmin, jsonValidate(updateJobSchema), async function (req, res, next) {
 	try {
 		let job = await Job.getById(req.params.id);
 		for (key in req.body) {
@@ -75,7 +74,7 @@ router.patch("/:id", ensureAdmin, jsonValidate(updateJobSchema), async function(
 	}
 });
 // apply to a job
-router.post("/:id/apply", ensureLoggedIn, jsonValidate(applySchema), async function(req, res, next) {
+router.post("/:id/apply", ensureLoggedIn, jsonValidate(applySchema), async function (req, res, next) {
 	try {
 		let apply = await Application.create(req.user.username, req.params.id, req.body.state);
 		return res.status(201).json({ message: apply });
@@ -83,7 +82,7 @@ router.post("/:id/apply", ensureLoggedIn, jsonValidate(applySchema), async funct
 		return next(e);
 	}
 });
-router.patch("/:id/apply", ensureAdmin, jsonValidate(updateApplySchema), async function(req, res, next) {
+router.patch("/:id/apply", ensureAdmin, jsonValidate(updateApplySchema), async function (req, res, next) {
 	try {
 		let apply = await Application.changeState(req.body.username, req.params.id, req.body.state);
 		return res.json({ message: apply });

@@ -2,7 +2,6 @@
 
 const jwt = require("jsonwebtoken");
 const { SECRET_KEY } = require("../config");
-const User = require("../models/user");
 /** Middleware: Authenticate user. */
 
 function authenticateJWT(req, res, next) {
@@ -42,24 +41,23 @@ function ensureCorrectUser(req, res, next) {
 }
 
 /** Middleware: Requires user to be admin. */
-async function ensureAdmin(req, res, next) {
-    try {
-        const u = await User.get(req.user.username);
-        if (u.is_admin) {
-            return next();
-        } else {
-            return next({ status: 401, message: "Unauthorized" });
-        }
-    } catch (err) {
-        // errors would happen here if we made a request and req.user is undefined
-        return next({ status: 401, message: "Unauthorized" });
-    }
-}
+// async function ensureAdmin(req, res, next) {
+//     try {
+//         const u = await User.get(req.user.username);
+//         if (u.is_admin) {
+//             return next();
+//         } else {
+//             return next({ status: 401, message: "Unauthorized" });
+//         }
+//     } catch (err) {
+//         // errors would happen here if we made a request and req.user is undefined
+//         return next({ status: 401, message: "Unauthorized" });
+//     }
+// }
 // end
 
 module.exports = {
     authenticateJWT,
     ensureLoggedIn,
-    ensureCorrectUser,
-    ensureAdmin
+    ensureCorrectUser
 };

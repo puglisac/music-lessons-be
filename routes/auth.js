@@ -33,7 +33,7 @@ router.post("/teachers/login", async function (req, res, next) {
 /** POST /register - register user: registers, logs in, and returns token.
  
  */
-router.post("/teachers/signup", jsonValidate(userSchema), async function (req, res, next) {
+router.post("/teachers/signup", async function (req, res, next) {
 	try {
 		const { username, password, full_name, email } = req.body;
 		await Teacher.register(username, password, full_name, email);
