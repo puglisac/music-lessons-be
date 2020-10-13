@@ -19,7 +19,7 @@ router.post("/teachers/login", async function (req, res, next) {
 		const user = await Teacher.get(username);
 
 		if (!user) {
-			throw new ExpressError("Invalid user/password", 400);
+			throw new ExpressError("Invalid username/password", 400);
 		}
 		if (await Teacher.authenticate(username, password)) {
 			let token = jwt.sign({ username }, SECRET_KEY);

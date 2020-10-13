@@ -9,7 +9,7 @@ const Student = require("../models/student");
 
 /** get student by username */
 
-router.get("/:username", ensureLoggedIn, async function (req, res, next) {
+router.get("/:username", ensureCorrectUser, async function (req, res, next) {
     try {
         let student = await Student.get(req.params.username);
         return res.json({ user: student });
