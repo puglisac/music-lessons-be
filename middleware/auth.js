@@ -48,7 +48,7 @@ async function ensureAdmin(req, res, next) {
         if (u.is_admin) {
             return next();
         } else {
-            return next({ status: 401, message: "Unauthorized" })
+            return next({ status: 401, message: "Unauthorized" });
         }
     } catch (err) {
         // errors would happen here if we made a request and req.user is undefined
