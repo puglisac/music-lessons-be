@@ -21,7 +21,7 @@ class Student {
             full_name,
             email, 
             teacher_username)
-          VALUES ($1, $2, $3, $4)
+          VALUES ($1, $2, $3, $4, $5)
           RETURNING username, full_name, email`,
 			[username, hashedPassword, full_name, email, teacher_username]
 		);

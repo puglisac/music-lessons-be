@@ -24,6 +24,8 @@ router.post("/teachers/login", async function (req, res, next) {
 		if (await Teacher.authenticate(username, password)) {
 			let token = jwt.sign({ username }, SECRET_KEY);
 			return res.json({ token });
+		} else {
+			throw new ExpressError("Invalid username/password", 400);
 		}
 	} catch (err) {
 		return next(err);
@@ -58,6 +60,8 @@ router.post("/students/login", async function (req, res, next) {
 		if (await Student.authenticate(username, password)) {
 			let token = jwt.sign({ username }, SECRET_KEY);
 			return res.json({ token });
+		} else {
+			throw new ExpressError("Invalid username/password", 400);
 		}
 	} catch (err) {
 		return next(err);
@@ -67,7 +71,7 @@ router.post("/students/login", async function (req, res, next) {
 /** POST /register - register user: registers, logs in, and returns token.
  
  */
-router.post("/students/signup", jsonValidate(userSchema), async function (req, res, next) {
+router.post("/students/signup", async function (req, res, next) {
 	try {
 		const { username, password, full_name, email } = req.body;
 		await Student.register(username, password, full_name, email);
