@@ -3,7 +3,7 @@ const ExpressError = require("../helpers/expressError");
 
 class Note {
     constructor(id, lesson_id, note) {
-        this.id=id
+        this.id = id;
         this.lesson_id = lesson_id;
         this.note = note;
     }
@@ -15,7 +15,7 @@ class Note {
         const result = await db.query(
             `SELECT * FROM notes WHERE lesson_id = $1`, [lessonId]);
         if (result.rows.length === 0) {
-            throw new ExpressError(`No notes`, 404)
+            throw new ExpressError(`No notes`, 404);
         };
         return result.rows.map(n => new Note(n.id, n.lesson_id, n.note));
     }
@@ -48,8 +48,8 @@ class Note {
 
     static async create(lesson_id, note) {
         try {
-            const newLesson = await db.query(`INSERT INTO notes (lesson_id, note) VALUES ($1, $2) RETURNING id, lesson_id, note`, [lesson_id, note]);
-            const n = newLesson.rows[0];
+            const newNote = await db.query(`INSERT INTO notes (lesson_id, note) VALUES ($1, $2) RETURNING id, lesson_id, note`, [lesson_id, note]);
+            const n = newNote.rows[0];
             return new Note(n.id, n.lesson_id, n.note);
         } catch (e) {
             throw new Error("Something went wrong");

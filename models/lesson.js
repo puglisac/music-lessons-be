@@ -3,8 +3,8 @@ const ExpressError = require("../helpers/expressError");
 
 class Lesson {
     constructor(id, date, teacher_username, student_username) {
-        this.id=id
-        this.date = title;
+        this.id = id;
+        this.date = date;
         this.teacher_username = teacher_username;
         this.student_username = student_username;
     }
@@ -16,7 +16,7 @@ class Lesson {
         const result = await db.query(
             `SELECT * FROM lessons WHERE teacher_username = $1 AND student_username = $2`, [teacher_username, student_username]);
         if (result.rows.length === 0) {
-            throw new ExpressError(`No Lesson for ${teacher_username} and ${student_username}`, 404)
+            throw new ExpressError(`No Lesson for ${teacher_username} and ${student_username}`, 404);
         };
         return result.rows.map(l => new Lesson(l.id, l.date, l.teacher_username, l.student_username));
     }
@@ -42,12 +42,12 @@ class Lesson {
         }
 
         let l = result.rows[0];
-        return new Lesson(l.id, l.date, l.teacher_username, l.student_username, l.teacher_username);
+        return new Lesson(l.id, l.date, l.teacher_username, l.student_username);
     }
 
     /** create a lesson: returns lesson */
 
-    static async create(date, teacher_username, student_username ) {
+    static async create(date, teacher_username, student_username) {
         try {
             const newLesson = await db.query(`INSERT INTO lessons (date, teacher_username, student_username) VALUES ($1, $2, $3) RETURNING id, title, description, lesson_plan, teacher_username`, [date, teacher_username, student_username]);
             const l = newLesson.rows[0];

@@ -2,6 +2,7 @@
 
 const jwt = require("jsonwebtoken");
 const { SECRET_KEY } = require("../config");
+const Teacher = require("../models/teacher");
 /** Middleware: Authenticate user. */
 
 function authenticateJWT(req, res, next) {
@@ -39,6 +40,30 @@ function ensureCorrectUser(req, res, next) {
         return next({ status: 401, message: "Unauthorized" });
     }
 }
+function ensureTeacherOrStudent(req, res, next) {
+    try {
+        if (req.user.username === req.params.teacher_username || req.body.username === req.params.student_username) {
+            return next();
+        } else {
+            return next({ status: 401, message: "Unauthorized" });
+        }
+    } catch (err) {
+        // errors would happen here if we made a request and req.user is undefined
+        return next({ status: 401, message: "Unauthorized" });
+    }
+}
+async function ensureTeacher(req, res, next) {
+    try {
+        if (req.user.username === req.params.teacher_username) {
+            return next();
+        } else {
+            return next({ status: 401, message: "Unauthorized" });
+        }
+    } catch (err) {
+        // errors would happen here if we made a request and req.user is undefined
+        return next({ status: 401, message: "Unauthorized" });
+    }
+}
 
 /** Middleware: Requires user to be admin. */
 // async function ensureAdmin(req, res, next) {
@@ -59,5 +84,7 @@ function ensureCorrectUser(req, res, next) {
 module.exports = {
     authenticateJWT,
     ensureLoggedIn,
-    ensureCorrectUser
+    ensureCorrectUser,
+    ensureTeacherOrStudent,
+    ensureTeacher
 };

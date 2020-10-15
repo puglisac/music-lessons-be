@@ -9,7 +9,7 @@ const Student = require("../models/student");
 
 /** get student by username */
 
-router.get("/:username", ensureCorrectUser, async function (req, res, next) {
+router.get("/:username", ensureLoggedIn, async function (req, res, next) {
     try {
         let student = await Student.get(req.params.username);
         return res.json({ user: student });
@@ -24,7 +24,7 @@ router.delete("/:username", ensureCorrectUser, async function (req, res, next) {
     try {
         let student = await Student.get(req.params.username);
         await student.remove();
-        return res.json({ message: "user deleted" });
+        return res.json({ message: "student deleted" });
     } catch (e) {
         return next(e);
     }

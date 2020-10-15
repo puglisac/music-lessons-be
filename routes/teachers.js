@@ -6,10 +6,12 @@ const router = new express.Router();
 const ExpressError = require("../helpers/expressError");
 const { ensureLoggedIn, ensureCorrectUser } = require("../middleware/auth");
 const Teacher = require("../models/teacher");
+const Student = require("../models/student");
+const Lesson = require("../models/lesson");
 
 /** get teacher by username */
 
-router.get("/:username", ensureCorrectUser, async function (req, res, next) {
+router.get("/:username", ensureLoggedIn, async function (req, res, next) {
 	try {
 		let teacher = await Teacher.get(req.params.username);
 		return res.json({ user: teacher });
@@ -24,7 +26,7 @@ router.delete("/:username", ensureCorrectUser, async function (req, res, next) {
 	try {
 		let teacher = await Teacher.get(req.params.username);
 		await teacher.remove();
-		return res.json({ message: "user deleted" });
+		return res.json({ message: "teacher deleted" });
 	} catch (e) {
 		return next(e);
 	}
