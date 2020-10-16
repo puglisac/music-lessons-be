@@ -8,7 +8,6 @@ const ExpressError = require("../helpers/expressError");
 const { ensureLoggedIn, ensureCorrectUser } = require("../middleware/auth");
 const Teacher = require("../models/teacher");
 const Student = require("../models/student");
-const Lesson = require("../models/lesson");
 
 /** get teacher by username */
 

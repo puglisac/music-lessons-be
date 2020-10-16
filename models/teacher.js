@@ -58,9 +58,11 @@ class Teacher {
 			throw new ExpressError(`No such user: ${username}`, 404);
 		}
 		const t = teacher.rows[0];
-		const students = teacher.rows.map(s => [s.student_username,
-		s.student_full_name,
-		s.student_email]);
+		const students = teacher.rows.map(s => {
+			s.student_username,
+			s.student_full_name,
+			s.student_email
+		});
 
 		return new Teacher(t.username, t.full_name, t.email, students);
 	}
