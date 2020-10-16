@@ -5,54 +5,54 @@
     "title": "The root schema",
     "description": "The root schema comprises the entire JSON document.",
     "default": {},
-    "examples": [{
-        "name": "apple",
-        "num_employees": 200,
-        "description": "we make computers",
-        "logo_url": "https://image.shutterstock.com/image-vector/internet-design-logoicon-template-260nw-1037418430.jpg"
-    }],
-    "required": [
-
+    "examples": [
+        {
+            "username": "user",
+            "password": "password",
+            "full_name": "full name",
+            "email": "email@email.com"
+        }
     ],
+    "required": [],
     "properties": {
-        "name": {
-            "$id": "#/properties/name",
+        "username": {
+            "$id": "#/properties/username",
             "type": "string",
-            "title": "The name schema",
+            "title": "The username schema",
             "description": "An explanation about the purpose of this instance.",
             "default": "",
             "examples": [
-                "apple"
+                "user"
             ]
         },
-        "num_employees": {
-            "$id": "#/properties/num_employees",
-            "type": "integer",
-            "title": "The num_employees schema",
-            "description": "An explanation about the purpose of this instance.",
-            "default": 0,
-            "examples": [
-                200
-            ]
-        },
-        "description": {
-            "$id": "#/properties/description",
+        "password": {
+            "$id": "#/properties/password",
             "type": "string",
-            "title": "The description schema",
+            "title": "The password schema",
             "description": "An explanation about the purpose of this instance.",
             "default": "",
             "examples": [
-                "we make computers"
+                "password"
             ]
         },
-        "logo_url": {
-            "$id": "#/properties/logo_url",
+        "full_name": {
+            "$id": "#/properties/full_name",
             "type": "string",
-            "title": "The logo_url schema",
+            "title": "The full_name schema",
             "description": "An explanation about the purpose of this instance.",
             "default": "",
             "examples": [
-                "https://image.shutterstock.com/image-vector/internet-design-logoicon-template-260nw-1037418430.jpg"
+                "full name"
+            ]
+        },
+        "email": {
+            "$id": "#/properties/email",
+            "type": "string",
+            "title": "The email schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": "",
+            "examples": [
+                "email@email.com"
             ]
         }
     },

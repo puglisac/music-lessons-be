@@ -2,9 +2,9 @@ const express = require("express");
 const router = new express.Router();
 const jsonValidate = require("../middleware/jsonValidate");
 const userSchema = require("../schema/userSchema.json");
+const signInSchema = require("../schema/signInSchema.json");
 const jwt = require("jsonwebtoken");
 const ExpressError = require("../helpers/expressError");
-const { authenticateJWT, ensureLoggedIn, ensureCorrectUser } = require("../middleware/auth");
 const { SECRET_KEY } = require("../config");
 const Teacher = require("../models/teacher");
 const Student = require("../models/student");
@@ -13,7 +13,7 @@ const Student = require("../models/student");
  *
  **/
 
-router.post("/teachers/login", async function (req, res, next) {
+router.post("/teachers/login", jsonValidate(signInSchema), async function (req, res, next) {
 	try {
 		const { username, password } = req.body;
 		const user = await Teacher.get(username);
@@ -35,7 +35,7 @@ router.post("/teachers/login", async function (req, res, next) {
 /** POST /register - register user: registers, logs in, and returns token.
  
  */
-router.post("/teachers/signup", async function (req, res, next) {
+router.post("/teachers/signup", jsonValidate(userSchema), async function (req, res, next) {
 	try {
 		const { username, password, full_name, email } = req.body;
 		await Teacher.register(username, password, full_name, email);
@@ -49,7 +49,7 @@ router.post("/teachers/signup", async function (req, res, next) {
 	}
 });
 
-router.post("/students/login", async function (req, res, next) {
+router.post("/students/login", jsonValidate(signInSchema), async function (req, res, next) {
 	try {
 		const { username, password } = req.body;
 		const user = await Student.get(username);
@@ -71,7 +71,7 @@ router.post("/students/login", async function (req, res, next) {
 /** POST /register - register user: registers, logs in, and returns token.
  
  */
-router.post("/students/signup", async function (req, res, next) {
+router.post("/students/signup", jsonValidate(signInSchema), async function (req, res, next) {
 	try {
 		const { username, password, full_name, email } = req.body;
 		await Student.register(username, password, full_name, email);

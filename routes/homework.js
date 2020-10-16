@@ -1,5 +1,7 @@
 const express = require("express");
 const jsonValidate = require("../middleware/jsonValidate");
+const homeworkSchema = require("../schema/homeworkSchema.json");
+const updateHomeworkSchema = require("../schema/updateHomeworkSchema.json");
 const { json } = require("express");
 const router = new express.Router();
 const Homework = require("../models/homework");
@@ -29,7 +31,7 @@ router.get("/:teacher_username/:student_username/:lesson_id/:id", ensureTeacherO
 
 /** create homework */
 
-router.post("/:teacher_username/:student_username/:lesson_id", ensureTeacher, jsonValidate(jobSchema), async function (req, res, next) {
+router.post("/:teacher_username/:student_username/:lesson_id", ensureTeacher, jsonValidate(homeworkSchema), async function (req, res, next) {
     try {
         let newHomework = await Homework.create(req.params.lesson_id, req.body.assignment);
         return res.status(201).json({ homework: newHomework });
@@ -52,7 +54,7 @@ router.delete("/:teacher_username/:student_username/:lesson_id/:id", ensureTeach
 
 /** updates homework */
 
-router.patch("/:teacher_username/:student_username/lesson_id/:id", ensureTeacher, jsonValidate(updateJobSchema), async function (req, res, next) {
+router.patch("/:teacher_username/:student_username/lesson_id/:id", ensureTeacher, jsonValidate(updateHomeworkSchema), async function (req, res, next) {
     try {
         let homework = await Homework.getById(req.params.id);
         for (key in req.body) {

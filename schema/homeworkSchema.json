@@ -1,0 +1,29 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "$id": "http://example.com/example.json",
+    "type": "object",
+    "title": "The root schema",
+    "description": "The root schema comprises the entire JSON document.",
+    "default": {},
+    "examples": [
+        {
+            "assignment": "here is your assignment"
+        }
+    ],
+    "required": [
+        "assignment"
+    ],
+    "properties": {
+        "assignment": {
+            "$id": "#/properties/assignment",
+            "type": "string",
+            "title": "The assignment schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": "",
+            "examples": [
+                "here is your assignment"
+            ]
+        }
+    },
+    "additionalProperties": true
+}

@@ -5,13 +5,15 @@
     "title": "The root schema",
     "description": "The root schema comprises the entire JSON document.",
     "default": {},
-    "examples": [{
-        "username": "username",
-        "state": "applied"
-    }],
+    "examples": [
+        {
+            "username": "user",
+            "password": "password"
+        }
+    ],
     "required": [
         "username",
-        "state"
+        "password"
     ],
     "properties": {
         "username": {
@@ -21,18 +23,17 @@
             "description": "An explanation about the purpose of this instance.",
             "default": "",
             "examples": [
-                "username"
+                "user"
             ]
         },
-        "state": {
-            "$id": "#/properties/state",
+        "password": {
+            "$id": "#/properties/password",
             "type": "string",
-            "enum": ["interested", "applied", "accepted", "rejected"],
-            "title": "The state schema",
+            "title": "The password schema",
             "description": "An explanation about the purpose of this instance.",
             "default": "",
             "examples": [
-                "applied"
+                "password"
             ]
         }
     },

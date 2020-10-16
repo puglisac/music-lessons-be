@@ -1,6 +1,7 @@
 const express = require("express");
 const jsonValidate = require("../middleware/jsonValidate");
-const updateUserSchema = require("../schema/updateUserSchema.json");
+const updateTeacherSchema = require("../schema/updateTeacherSchema.json");
+const updateStudentSchema = require("../schema/updateStudentSchema.json");
 const { json } = require("express");
 const router = new express.Router();
 const ExpressError = require("../helpers/expressError");
@@ -34,7 +35,7 @@ router.delete("/:username", ensureCorrectUser, async function (req, res, next) {
 
 /** updates a teacher */
 
-router.patch("/:username", ensureCorrectUser, jsonValidate(updateUserSchema), async function (req, res, next) {
+router.patch("/:username", ensureCorrectUser, jsonValidate(updateTeacherSchema), async function (req, res, next) {
 	try {
 		let teacher = await Teacher.get(req.params.username);
 		for (key in req.body) {
@@ -49,7 +50,7 @@ router.patch("/:username", ensureCorrectUser, jsonValidate(updateUserSchema), as
 });
 
 // adds a student to teacher
-router.patch("/:username/add_student", ensureCorrectUser, jsonValidate(updateUserSchema), async function (req, res, next) {
+router.patch("/:username/add_student", ensureCorrectUser, jsonValidate(updateStudentSchema), async function (req, res, next) {
 	try {
 		let teacher = await Teacher.get(req.params.username);
 		let student = await Student.get(req.body.student_username);

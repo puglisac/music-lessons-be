@@ -5,22 +5,23 @@
     "title": "The root schema",
     "description": "The root schema comprises the entire JSON document.",
     "default": {},
-    "examples": [{
-        "state": "applied"
-    }],
+    "examples": [
+        {
+            "date": "2012-04-23T18:25:43.511Z"
+        }
+    ],
     "required": [
-        "state"
+        "date"
     ],
     "properties": {
-        "state": {
-            "$id": "#/properties/state",
+        "date": {
+            "$id": "#/properties/date",
             "type": "string",
-            "enum": ["interested", "applied", "accepted", "rejected"],
-            "title": "The state schema",
+            "title": "The date schema",
             "description": "An explanation about the purpose of this instance.",
             "default": "",
             "examples": [
-                "applied"
+                "2012-04-23T18:25:43.511Z"
             ]
         }
     },

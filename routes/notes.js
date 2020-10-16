@@ -1,5 +1,6 @@
 const express = require("express");
 const jsonValidate = require("../middleware/jsonValidate");
+const noteSchema = require("../schema/noteSchema.json");
 const { json } = require("express");
 const router = new express.Router();
 const Note = require("../models/note");
@@ -29,7 +30,7 @@ router.get("/:teacher_username/:student_username/:lesson_id/:id", ensureTeacherO
 
 /** create lesson */
 
-router.post("/:teacher_username/:student_username/:lesson_id", ensureTeacher, jsonValidate(jobSchema), async function (req, res, next) {
+router.post("/:teacher_username/:student_username/:lesson_id", ensureTeacher, jsonValidate(noteSchema), async function (req, res, next) {
 	try {
 		let newNote = await Note.create(req.params.lesson_id, req.body.note);
 		return res.status(201).json({ note: newNote });
@@ -52,7 +53,7 @@ router.delete("/:teacher_username/:student_username/:lesson_id/:id", ensureTeach
 
 /** updates a note */
 
-router.patch("/:teacher_username/:student_username/lesson_id/:id", ensureTeacher, jsonValidate(updateJobSchema), async function (req, res, next) {
+router.patch("/:teacher_username/:student_username/lesson_id/:id", ensureTeacher, jsonValidate(noteSchema), async function (req, res, next) {
 	try {
 		let note = await Note.getById(req.params.id);
 		for (key in req.body) {
