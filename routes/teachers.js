@@ -48,4 +48,17 @@ router.patch("/:username", ensureCorrectUser, jsonValidate(updateUserSchema), as
 	}
 });
 
+// adds a student to teacher
+router.patch("/:username/add_student", ensureCorrectUser, jsonValidate(updateUserSchema), async function (req, res, next) {
+	try {
+		let teacher = await Teacher.get(req.params.username);
+		let student = await Student.get(req.body.student_username);
+		student.teacher_username = teacher.username;
+		student.save();
+		return res.json({ message: "student added" });
+	} catch (e) {
+		return next(e);
+	}
+});
+
 module.exports = router;
