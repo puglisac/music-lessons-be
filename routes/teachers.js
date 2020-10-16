@@ -54,9 +54,25 @@ router.patch("/:username/add_student", ensureCorrectUser, jsonValidate(updateStu
 	try {
 		let teacher = await Teacher.get(req.params.username);
 		let student = await Student.get(req.body.student_username);
+		if (student.teacher_username) {
+			throw new ExpressError(`${student.username} already has a teacher`, 401);
+		}
 		student.teacher_username = teacher.username;
 		student.save();
 		return res.json({ message: "student added" });
+	} catch (e) {
+		return next(e);
+	}
+});
+
+
+// removes student from teacher
+router.patch("/:username/remove_student", ensureCorrectUser, jsonValidate(updateStudentSchema), async function (req, res, next) {
+	try {
+		let student = await Student.get(req.body.student_username);
+		student.teacher_username = null;
+		student.save();
+		return res.json({ message: "student removed" });
 	} catch (e) {
 		return next(e);
 	}
