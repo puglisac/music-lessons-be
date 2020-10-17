@@ -51,7 +51,7 @@ class Teacher {
 			s.email AS student_email
 			FROM teachers AS t FULL JOIN students AS s 
 			ON s.teacher_username = t.username 
-			WHERE username = $1`,
+			WHERE t.username = $1`,
 			[username]
 		);
 		if (!teacher.rows[0]) {

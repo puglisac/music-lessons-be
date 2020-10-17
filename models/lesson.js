@@ -40,8 +40,8 @@ class Lesson {
         const result = await db.query(
             `SELECT l.id, l.date, l.teacher_username, l.student_username,
             n.id AS note_id, n.note, h.id AS hw_id, h.assignment, h.completed
-            FROM lessons AS l FULL JOIN notes as n FULL JOIN homework AS h
-            WHERE id = $1`, [id]);
+            FROM lessons AS l FULL JOIN notes as n ON n.lesson_id=l.id FULL JOIN homework AS h ON h.lesson_id=l.id
+            WHERE l.id = $1`, [id]);
         if (result.rows.length === 0) {
             throw new ExpressError(`No such lesson with id: ${id}`, 404);
         }
@@ -61,11 +61,11 @@ class Lesson {
 
     /** create a lesson: returns lesson */
 
-    static async create(date, teacher_username, student_username) {
+    static async create(teacher_username, student_username, date=new Date()) {
         try {
-            const newLesson = await db.query(`INSERT INTO lessons (date, teacher_username, student_username) VALUES ($1, $2, $3) RETURNING id, title, description, lesson_plan, teacher_username`, [date, teacher_username, student_username]);
+            const newLesson = await db.query(`INSERT INTO lessons (date, teacher_username, student_username) VALUES ($1, $2, $3) RETURNING id, date, teacher_username, student_username`, [date, teacher_username, student_username]);
             const l = newLesson.rows[0];
-            return new Lesson(l.id, l.teacher_username, l.student_username);
+            return new Lesson(l.id, l.date, l.teacher_username, l.student_username);
         } catch (e) {
             throw new Error("Something went wrong");
         }

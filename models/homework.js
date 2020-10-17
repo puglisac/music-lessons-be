@@ -42,14 +42,14 @@ class Homework {
         }
 
         let h = result.rows[0];
-        return new Note(h.id, h.lesson_id, h.assignment, h.completed);
+        return new Homework(h.id, h.lesson_id, h.assignment, h.completed);
     }
 
     /** create a homework assignment: returns homework */
 
     static async create(lesson_id, assignment, completed=false) {
         try {
-            const newHomework = await db.query(`INSERT INTO homework (lesson_id, assignment, completed) VALUES ($1, $2) RETURNING id, lesson_id, text`, [lesson_id, assignment, completed]);
+            const newHomework = await db.query(`INSERT INTO homework (lesson_id, assignment, completed) VALUES ($1, $2, $3) RETURNING id, lesson_id, assignment, completed`, [lesson_id, assignment, completed]);
             const h = newHomework.rows[0];
             return new Homework(h.id, h.lesson_id, h.assignment, h.completed);
         } catch (e) {
