@@ -21,7 +21,7 @@ describe("Test student class", function() {
             "username": "testing",
             "full_name": "test student",
             "email": "test@test.com", 
-            "teacher_username": undefined
+            "teacher_username": null
         });
     });
 

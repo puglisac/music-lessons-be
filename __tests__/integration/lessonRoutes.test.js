@@ -145,7 +145,7 @@ describe("lesson Routes Test", function () {
             });
         });
 
-        test("cannot update teacher without correct info", async function () {
+        test("cannot update lesson without correct info", async function () {
             const resp = await request(app)
                 .patch(`/lessons/testteacher/teststudent/${lessonId}`).send({
                     teacher_username: 84,

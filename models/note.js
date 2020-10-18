@@ -61,7 +61,7 @@ class Note {
 
     async save() {
         await db.query(
-            `UPDATE notes SET note=$1 WHERE id = $2`, [this.date, this.note]);
+            `UPDATE notes SET note=$1 WHERE id = $2`, [this.note, this.id]);
     }
 
     /** delete note */

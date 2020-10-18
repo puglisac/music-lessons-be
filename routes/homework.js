@@ -54,13 +54,13 @@ router.delete("/:teacher_username/:student_username/:lesson_id/:id", ensureTeach
 
 /** updates homework */
 
-router.patch("/:teacher_username/:student_username/lesson_id/:id", ensureTeacher, jsonValidate(updateHomeworkSchema), async function (req, res, next) {
+router.patch("/:teacher_username/:student_username/:lesson_id/:id", ensureTeacher, jsonValidate(updateHomeworkSchema), async function (req, res, next) {
     try {
         let homework = await Homework.getById(req.params.id);
         for (key in req.body) {
             homework[key] = req.body[key];
         }
-        note.save();
+        homework.save();
         const savedHomework = await Homework.getById(req.params.id);
         return res.json({ homework: savedHomework });
     } catch (e) {

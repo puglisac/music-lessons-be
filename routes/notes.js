@@ -28,7 +28,7 @@ router.get("/:teacher_username/:student_username/:lesson_id/:id", ensureTeacherO
 	}
 });
 
-/** create lesson */
+/** create note */
 
 router.post("/:teacher_username/:student_username/:lesson_id", ensureTeacher, jsonValidate(noteSchema), async function (req, res, next) {
 	try {
@@ -53,7 +53,7 @@ router.delete("/:teacher_username/:student_username/:lesson_id/:id", ensureTeach
 
 /** updates a note */
 
-router.patch("/:teacher_username/:student_username/lesson_id/:id", ensureTeacher, jsonValidate(noteSchema), async function (req, res, next) {
+router.patch("/:teacher_username/:student_username/:lesson_id/:id", ensureTeacher, jsonValidate(noteSchema), async function (req, res, next) {
 	try {
 		let note = await Note.getById(req.params.id);
 		for (key in req.body) {
