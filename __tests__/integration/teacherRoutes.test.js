@@ -10,13 +10,13 @@ describe("teacher Routes Test", function() {
     beforeEach(async function() {
         await db.query("DELETE FROM teachers");
         let t = await Teacher.register(
-            "testing",
+            "testteacher",
             "123",
             "test teacher",
             "test@test.com"
         );
         const res = await request(app).post("/teachers/login").send({
-            username: "testing",
+            username: "testteacher",
             password: "123"
         });
         token = res.body.token
@@ -26,12 +26,12 @@ describe("teacher Routes Test", function() {
     describe("get teachers/:username", function() {
         test("can get teacher by username", async function() {
             const resp = await request(app)
-                .get("/teachers/testing").send({_token: token})
+                .get("/teachers/testteacher").send({_token: token})
 
             expect(resp.status).toEqual(200);
             expect(resp.body).toEqual({
                 teacher: {
-                    username: "testing",
+                    username: "testteacher",
                     full_name: "test teacher",
                     email: "test@test.com",
                     students: expect.any(Array)
@@ -86,7 +86,7 @@ describe("teacher Routes Test", function() {
     describe("delete teachers/:username", function() {
         test("can delete a teacher ", async function() {
             const resp = await request(app)
-                .delete(`/teachers/testing`).send({ "_token": token })
+                .delete(`/teachers/testteacher`).send({ "_token": token })
 
             expect(resp.status).toEqual(200);
             expect(resp.body).toEqual({
@@ -107,7 +107,7 @@ describe("teacher Routes Test", function() {
     describe("patch teachers/:username", function() {
         test("can update a teacher ", async function() {
             const resp = await request(app)
-                .patch(`/teachers/testing`).send({
+                .patch(`/teachers/testteacher`).send({
                     full_name: "new name",
                     _token: token
                 });
@@ -115,7 +115,7 @@ describe("teacher Routes Test", function() {
             expect(resp.status).toEqual(200);
             expect(resp.body).toEqual({
                 teacher: {
-                    username: "testing",
+                    username: "testteacher",
                     full_name: "new name",
                     email: "test@test.com",
                     students: expect.any(Array)
@@ -125,7 +125,7 @@ describe("teacher Routes Test", function() {
 
         test("cannot update teacher without correct info", async function() {
             const resp = await request(app)
-                .patch(`/teachers/testing`).send({
+                .patch(`/teachers/testteacher`).send({
                     full_name: 84,
                     _token: token
                 });
@@ -146,7 +146,7 @@ describe("teacher Routes Test", function() {
             );
 
             const resp = await request(app)
-                .patch(`/teachers/testing/add_student`).send({
+                .patch(`/teachers/testteacher/add_student`).send({
                     student_username: "teststudent",
                     _token: token
                 });
@@ -159,7 +159,7 @@ describe("teacher Routes Test", function() {
 
         test("can remove student ", async function() {
             const resp = await request(app)
-                .patch(`/teachers/testing/remove_student`).send({
+                .patch(`/teachers/testteacher/remove_student`).send({
                     student_username: "teststudent",
                     _token: token
                 });
@@ -170,12 +170,12 @@ describe("teacher Routes Test", function() {
         });
         test("canot add student if student already has teacher", async function() {
             await request(app)
-                .patch(`/teachers/testing/add_student`).send({
+                .patch(`/teachers/testteacher/add_student`).send({
                     student_username: "teststudent",
                     _token: token
                 });
             const resp = await request(app)
-                .patch(`/teachers/testing/add_student`).send({
+                .patch(`/teachers/testteacher/add_student`).send({
                     student_username: "teststudent",
                     _token: token
                 });

@@ -30,9 +30,9 @@ router.get("/:teacher_username/:student_username/:id", ensureTeacher, async func
 
 /** create lesson */
 
-router.post("/:teacher_username/:student_username", ensureTeacher, jsonValidate(lessonSchema), async function (req, res, next) {
+router.post("/:teacher_username/:student_username", ensureTeacher, async function (req, res, next) {
 	try {
-		let newLesson = await Lesson.create(req.body.date, req.params.teacher_username, req.params.student_username);
+		let newLesson = await Lesson.create(req.params.teacher_username, req.params.student_username);
 		return res.status(201).json({ lesson: newLesson });
 	} catch (e) {
 		return next(e);
