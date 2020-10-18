@@ -12,7 +12,7 @@ const Student = require("../models/student");
 router.get("/:username", ensureLoggedIn, async function (req, res, next) {
     try {
         let student = await Student.get(req.params.username);
-        return res.json({ user: student });
+        return res.json({ student: student });
     } catch (e) {
         return next(e);
     }
@@ -40,7 +40,7 @@ router.patch("/:username", ensureCorrectUser, jsonValidate(updateStudentSchema),
         }
         student.save();
         const savedStudent = await Student.get(req.params.username);
-        return res.json({ user: savedStudent });
+        return res.json({ student: savedStudent });
     } catch (e) {
         return next(e);
     }

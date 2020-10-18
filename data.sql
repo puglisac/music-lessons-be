@@ -13,7 +13,7 @@ CREATE TABLE students
     password text NOT NULL,
     full_name text NOT NULL,
     email text NOT NULL UNIQUE,
-    teacher_username text REFERENCES teachers (username)
+    teacher_username text REFERENCES teachers (username) ON DELETE SET NULL
 );
 
 CREATE TABLE lessons

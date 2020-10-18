@@ -8,7 +8,7 @@ class Student {
 		this.username = username;
 		this.full_name = full_name;
 		this.email = email;
-		this.teacher_username = this.teacher_username;
+		this.teacher_username = teacher_username;
 
 	}
 
@@ -59,8 +59,8 @@ class Student {
 	}
 	async save() {
 		await db.query(
-			`UPDATE students SET full_name=$2, email=$3 WHERE username = $1`,
-			[this.username, this.full_name, this.email]
+			`UPDATE students SET full_name=$2, email=$3, teacher_username=$4 WHERE username = $1`,
+			[this.username, this.full_name, this.email, this.teacher_username]
 		);
 	}
 	async remove() {
