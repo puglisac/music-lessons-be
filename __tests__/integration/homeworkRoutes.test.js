@@ -8,8 +8,8 @@ const Lesson = require("../../models/lesson");
 const Homework = require("../../models/homework");
 
 let token;
-let lessonId
-let homeworkId
+let lessonId;
+let homeworkId;
 describe("lesson Routes Test", function () {
     beforeEach(async function () {
         await db.query("DELETE FROM teachers");
@@ -29,10 +29,10 @@ describe("lesson Routes Test", function () {
             "test student",
             "test@test.com"
         );
-        let l = await Lesson.create("testteacher", "teststudent")
-        lessonId = l.id
-        let h = await Homework.create(lessonId, "homework assignment")
-        homeworkId=h.id
+        let l = await Lesson.create("testteacher", "teststudent");
+        lessonId = l.id;
+        let h = await Homework.create(lessonId, "homework assignment");
+        homeworkId = h.id;
         const res = await request(app).post("/teachers/login").send({
             username: "testteacher",
             password: "123"
@@ -75,12 +75,12 @@ describe("lesson Routes Test", function () {
             const resp = await request(app)
                 .post(`/homework/testteacher/teststudent/${lessonId}`).send({
                     assignment: "new assignment",
-                    _token:token
-                })
+                    _token: token
+                });
 
             expect(resp.status).toEqual(201);
             expect(resp.body).toEqual({
-                homework:{
+                homework: {
                     id: expect.any(Number),
                     lesson_id: lessonId,
                     assignment: "new assignment",
@@ -92,8 +92,8 @@ describe("lesson Routes Test", function () {
             const resp = await request(app)
                 .post(`/homework/testteacher/teststudent/${lessonId}`).send({
                     lesson_id: 5,
-                    _token:token
-                })
+                    _token: token
+                });
 
             expect(resp.status).toEqual(400);
         });
@@ -162,7 +162,7 @@ describe("lesson Routes Test", function () {
             });
         });
 
-        test("cannot update note without correct info", async function () {
+        test("cannot update homework without correct info", async function () {
             const resp = await request(app)
                 .patch(`/homework/testteacher/teststudent/${lessonId}/${homeworkId}`).send({
                     completed: 84,

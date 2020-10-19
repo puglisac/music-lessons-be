@@ -59,7 +59,7 @@ router.patch("/:teacher_username/:student_username/:lesson_id/:id", ensureTeache
         let homework = await Homework.getById(req.params.id);
         for (key in req.body) {
             if (key != "_token") {
-                teacher[key] = req.body[key];
+                homework[key] = req.body[key];
             }
         }
         homework.save();

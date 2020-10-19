@@ -37,7 +37,7 @@ router.patch("/:username", ensureCorrectUser, jsonValidate(updateStudentSchema),
         let student = await Student.get(req.params.username);
         for (key in req.body) {
             if (key != "_token") {
-                teacher[key] = req.body[key];
+                student[key] = req.body[key];
             }
         }
         student.save();

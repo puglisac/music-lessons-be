@@ -51,9 +51,7 @@ describe("Test lesson class", function () {
             id: expect.any(Number),
             date: expect.any(Date),
             teacher_username: "testteacher",
-            student_username: "teststudent",
-            homework: [],
-            notes: []
+            student_username: "teststudent"
         });
     });
     test("can get lesson by id", async function () {

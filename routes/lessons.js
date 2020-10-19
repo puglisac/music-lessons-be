@@ -58,7 +58,7 @@ router.patch("/:teacher_username/:student_username/:id", ensureTeacher, jsonVali
 		let lesson = await Lesson.getById(req.params.id);
 		for (key in req.body) {
 			if (key != "_token") {
-				teacher[key] = req.body[key];
+				lesson[key] = req.body[key];
 			}
 		}
 		lesson.save();
