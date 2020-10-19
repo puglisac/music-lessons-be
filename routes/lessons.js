@@ -1,6 +1,6 @@
 const express = require("express");
 const jsonValidate = require("../middleware/jsonValidate");
-const lessonSchema = require("../schema/lessonSchema.json");
+const updateLessonSchema = require("../schema/updateLessonSchema.json");
 const { json } = require("express");
 const router = new express.Router();
 const Lesson = require("../models/lesson");
@@ -53,7 +53,7 @@ router.delete("/:teacher_username/:student_username/:id", ensureTeacher, async f
 
 /** updates a lesson */
 
-router.patch("/:teacher_username/:student_username/:id", ensureTeacher, jsonValidate(lessonSchema), async function (req, res, next) {
+router.patch("/:teacher_username/:student_username/:id", ensureTeacher, jsonValidate(updateLessonSchema), async function (req, res, next) {
 	try {
 		let lesson = await Lesson.getById(req.params.id);
 		for (key in req.body) {
