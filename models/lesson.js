@@ -2,13 +2,11 @@ const db = require("../db");
 const ExpressError = require("../helpers/expressError");
 
 class Lesson {
-    constructor(id, date, teacher_username, student_username, notes = [], homework = []) {
+    constructor(id, date, teacher_username, student_username) {
         this.id = id;
         this.date = date;
         this.teacher_username = teacher_username;
         this.student_username = student_username;
-        this.notes = notes;
-        this.homework = homework;
     }
 
 
@@ -38,25 +36,16 @@ class Lesson {
 
     static async getById(id) {
         const result = await db.query(
-            `SELECT l.id, l.date, l.teacher_username, l.student_username,
-            n.id AS note_id, n.note, h.id AS hw_id, h.assignment, h.completed
-            FROM lessons AS l FULL JOIN notes as n ON n.lesson_id=l.id FULL JOIN homework AS h ON h.lesson_id=l.id
-            WHERE l.id = $1`, [id]);
+            `SELECT id, date, teacher_username, student_username 
+            FROM lessons 
+            WHERE id = $1`, [id]);
         if (result.rows.length === 0) {
             throw new ExpressError(`No such lesson with id: ${id}`, 404);
         }
 
         let l = result.rows[0];
-        const notes = result.rows.map(n => {
-            n.note_id,
-                n.note;
-        });
-        const homework = result.rows.map(h => {
-            h.hw_id,
-                h.assignment,
-                h.completed;
-        });
-        return new Lesson(l.id, l.date, l.teacher_username, l.student_username, notes, homework);
+
+        return new Lesson(l.id, l.date, l.teacher_username, l.student_username);
     }
 
     /** create a lesson: returns lesson */

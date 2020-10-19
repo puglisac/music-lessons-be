@@ -48,6 +48,16 @@ router.patch("/:username", ensureCorrectUser, jsonValidate(updateTeacherSchema),
 	}
 });
 
+// gets students of a teacher
+router.get("/:username/students", ensureCorrectUser, async function (req, res, next) {
+	try {
+		let students = await Teacher.getStudents(req.params.username);
+		return res.json({ students: students });
+	} catch (e) {
+		return next(e);
+	}
+});
+
 // adds a student to teacher
 router.patch("/:username/add_student", ensureCorrectUser, jsonValidate(updateStudentSchema), async function (req, res, next) {
 	try {

@@ -2,6 +2,7 @@ const bcrypt = require("bcrypt");
 const { BCRYPT_WORK_FACTOR } = require("../config");
 const db = require("../db");
 const ExpressError = require("../helpers/expressError");
+const Student = require("./student");
 
 class Teacher {
 	constructor(username, full_name, email, students = []) {
@@ -44,27 +45,33 @@ class Teacher {
 
 	static async get(username) {
 		const teacher = await db.query(
-			`SELECT t.username, t.full_name, t.email, 
-			s.username AS student_username, s.full_name 
-			AS student_full_name, 
-			s.email AS student_email
-			FROM teachers AS t FULL JOIN students AS s 
-			ON s.teacher_username = t.username 
-			WHERE t.username = $1`,
+			`SELECT username, full_name, email,
+			FROM teachers 
+			WHERE username = $1`,
 			[username]
 		);
 		if (!teacher.rows[0]) {
 			throw new ExpressError(`No such user: ${username}`, 404);
 		}
 		const t = teacher.rows[0];
-		const students = teacher.rows.map(s => {
-			s.student_username,
-				s.student_full_name,
-				s.student_email;
-		});
-
-		return new Teacher(t.username, t.full_name, t.email, students);
+		return new Teacher(t.username, t.full_name, t.email);
 	}
+
+	// get students of teacher
+	static async getStudents(teacher_username) {
+		const res = await db.query(
+			`SELECT username, full_name, email,
+			FROM students 
+			WHERE teacher_username = $1`,
+			[teacher_username]
+		);
+		if (!teacher.rows[0]) {
+			throw new ExpressError(`No such user: ${username}`, 404);
+		}
+		const students = res.map(s => new Student(s.username, s.full_name, s.email));
+		return students;
+	}
+
 	async save() {
 		await db.query(
 			`UPDATE teachers SET full_name=$2, email=$3 WHERE username = $1`,
