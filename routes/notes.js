@@ -57,7 +57,9 @@ router.patch("/:teacher_username/:student_username/:lesson_id/:id", ensureTeache
 	try {
 		let note = await Note.getById(req.params.id);
 		for (key in req.body) {
-			note[key] = req.body[key];
+			if (key != "_token") {
+				teacher[key] = req.body[key];
+			}
 		}
 		note.save();
 		const savedNote = await Note.getById(req.params.id);
