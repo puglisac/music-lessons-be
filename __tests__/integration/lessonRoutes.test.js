@@ -46,9 +46,7 @@ describe("lesson Routes Test", function () {
                     id: lessonId,
                     teacher_username: "testteacher",
                     student_username: "teststudent",
-                    date: expect.any(String),
-                    homework: expect.any(Array),
-                    notes: expect.any(Array)
+                    date: expect.any(String)
                 }]
             });
         });
@@ -71,9 +69,7 @@ describe("lesson Routes Test", function () {
                     id: expect.any(Number),
                     teacher_username: "testteacher",
                     student_username: "teststudent",
-                    date: expect.any(String),
-                    homework: expect.any(Array),
-                    notes: expect.any(Array)
+                    date: expect.any(String)
                 }
             });
         });
@@ -90,9 +86,7 @@ describe("lesson Routes Test", function () {
                     id: lessonId,
                     teacher_username: "testteacher",
                     student_username: "teststudent",
-                    date: expect.any(String),
-                    homework: expect.any(Array),
-                    notes: expect.any(Array)
+                    date: expect.any(String)
                 }
             });
         });
@@ -138,9 +132,7 @@ describe("lesson Routes Test", function () {
                     id: lessonId,
                     teacher_username: "testteacher",
                     student_username: "teststudent",
-                    date: expect.any(String),
-                    homework: expect.any(Array),
-                    notes: expect.any(Array)
+                    date: expect.any(String)
                 }
             });
         });

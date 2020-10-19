@@ -2,12 +2,12 @@ const request = require("supertest");
 
 const app = require("../../app");
 const db = require("../../db");
-const Teacher = require("../../models/teacher")
-const Student = require ("../../models/student")
+const Teacher = require("../../models/teacher");
+const Student = require("../../models/student");
 
 let token;
-describe("teacher Routes Test", function() {
-    beforeEach(async function() {
+describe("teacher Routes Test", function () {
+    beforeEach(async function () {
         await db.query("DELETE FROM teachers");
         let t = await Teacher.register(
             "testteacher",
@@ -19,28 +19,27 @@ describe("teacher Routes Test", function() {
             username: "testteacher",
             password: "123"
         });
-        token = res.body.token
+        token = res.body.token;
     });
 
 
-    describe("get teachers/:username", function() {
-        test("can get teacher by username", async function() {
+    describe("get teachers/:username", function () {
+        test("can get teacher by username", async function () {
             const resp = await request(app)
-                .get("/teachers/testteacher").send({_token: token})
+                .get("/teachers/testteacher").send({ _token: token });
 
             expect(resp.status).toEqual(200);
             expect(resp.body).toEqual({
                 teacher: {
                     username: "testteacher",
                     full_name: "test teacher",
-                    email: "test@test.com",
-                    students: expect.any(Array)
+                    email: "test@test.com"
                 }
             });
         });
-        test("return 404 if not found ", async function() {
+        test("return 404 if not found ", async function () {
             const resp = await request(app)
-                .get("/teachers/notauser").send({_token: token})
+                .get("/teachers/notauser").send({ _token: token });
 
             expect(resp.status).toEqual(404);
             expect(resp.body).toEqual({
@@ -50,8 +49,8 @@ describe("teacher Routes Test", function() {
         });
     });
 
-    describe("post /teachers/signup", function() {
-        test("can create new teacher ", async function() {
+    describe("post /teachers/signup", function () {
+        test("can create new teacher ", async function () {
             const resp = await request(app)
                 .post("/teachers/signup").send({
                     username: "newteacher",
@@ -67,7 +66,7 @@ describe("teacher Routes Test", function() {
             });
         });
 
-        test("cannot create new teacher without correct info", async function() {
+        test("cannot create new teacher without correct info", async function () {
             const resp = await request(app)
                 .post("/teachers/signup").send({
                     username: "newuser",
@@ -83,19 +82,19 @@ describe("teacher Routes Test", function() {
         });
 
     });
-    describe("delete teachers/:username", function() {
-        test("can delete a teacher ", async function() {
+    describe("delete teachers/:username", function () {
+        test("can delete a teacher ", async function () {
             const resp = await request(app)
-                .delete(`/teachers/testteacher`).send({ "_token": token })
+                .delete(`/teachers/testteacher`).send({ "_token": token });
 
             expect(resp.status).toEqual(200);
             expect(resp.body).toEqual({
                 message: "teacher deleted"
             });
         });
-        test("return 401 if not authorized ", async function() {
+        test("return 401 if not authorized ", async function () {
             const resp = await request(app)
-                .delete("/teachers/notauser").send({ "_token": token })
+                .delete("/teachers/notauser").send({ "_token": token });
 
             expect(resp.status).toEqual(401);
             expect(resp.body).toEqual({
@@ -104,8 +103,8 @@ describe("teacher Routes Test", function() {
             });
         });
     });
-    describe("patch teachers/:username", function() {
-        test("can update a teacher ", async function() {
+    describe("patch teachers/:username", function () {
+        test("can update a teacher ", async function () {
             const resp = await request(app)
                 .patch(`/teachers/testteacher`).send({
                     full_name: "new name",
@@ -117,13 +116,12 @@ describe("teacher Routes Test", function() {
                 teacher: {
                     username: "testteacher",
                     full_name: "new name",
-                    email: "test@test.com",
-                    students: expect.any(Array)
+                    email: "test@test.com"
                 }
             });
         });
 
-        test("cannot update teacher without correct info", async function() {
+        test("cannot update teacher without correct info", async function () {
             const resp = await request(app)
                 .patch(`/teachers/testteacher`).send({
                     full_name: 84,
@@ -135,8 +133,8 @@ describe("teacher Routes Test", function() {
         });
 
     });
-    describe("patch teachers/:username/add_student", function() {
-        test("can add student to teacher", async function() {
+    describe("patch teachers/:username/add_student", function () {
+        test("can add student to teacher", async function () {
             await db.query("DELETE FROM students");
             let s = await Student.register(
                 "teststudent",
@@ -157,7 +155,7 @@ describe("teacher Routes Test", function() {
             });
         });
 
-        test("can remove student ", async function() {
+        test("can remove student ", async function () {
             const resp = await request(app)
                 .patch(`/teachers/testteacher/remove_student`).send({
                     student_username: "teststudent",
@@ -165,10 +163,10 @@ describe("teacher Routes Test", function() {
                 });
 
             expect(resp.status).toEqual(200);
-            expect(resp.body).toEqual({message:"student removed"})
+            expect(resp.body).toEqual({ message: "student removed" });
 
         });
-        test("canot add student if student already has teacher", async function() {
+        test("canot add student if student already has teacher", async function () {
             await request(app)
                 .patch(`/teachers/testteacher/add_student`).send({
                     student_username: "teststudent",
@@ -183,8 +181,30 @@ describe("teacher Routes Test", function() {
             expect(resp.status).toEqual(401);
         });
     });
+    describe("get teachers/:username/students", function () {
+        test("can get teacher's students", async function () {
+            await db.query("DELETE FROM students");
+            let s = await Student.register(
+                "teststudent",
+                "123",
+                "test student",
+                "test@test.com"
+            );
+
+            await request(app)
+                .patch(`/teachers/testteacher/add_student`).send({
+                    student_username: "teststudent",
+                    _token: token
+                });
+            const resp = await (await request(app).get("/teachers/testteacher/students").send({ _token: token }));
+            expect(resp.status).toEqual(200);
+            expect(resp.body).toEqual({
+                students: expect.any(Array)
+            });
+        });
+    });
 });
 
-afterAll(async function() {
+afterAll(async function () {
     await db.end();
 });
