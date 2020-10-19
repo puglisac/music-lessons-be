@@ -34,7 +34,7 @@ class Lesson {
     //     return result.rows.map(j => new Job(j.id, j.title, j.salary, j.equity, j.company_handle, j.date_posted));
     // }
 
-    /** get lesson by id: returns lesson */
+    /** get lesson by id: returns lesson, notes, homework */
 
     static async getById(id) {
         const result = await db.query(
@@ -49,19 +49,19 @@ class Lesson {
         let l = result.rows[0];
         const notes = result.rows.map(n => {
             n.note_id,
-            n.note
+                n.note;
         });
         const homework = result.rows.map(h => {
             h.hw_id,
-            h.assignment,
-            h.completed
+                h.assignment,
+                h.completed;
         });
         return new Lesson(l.id, l.date, l.teacher_username, l.student_username, notes, homework);
     }
 
     /** create a lesson: returns lesson */
 
-    static async create(teacher_username, student_username, date=new Date()) {
+    static async create(teacher_username, student_username, date = new Date()) {
         try {
             const newLesson = await db.query(`INSERT INTO lessons (date, teacher_username, student_username) VALUES ($1, $2, $3) RETURNING id, date, teacher_username, student_username`, [date, teacher_username, student_username]);
             const l = newLesson.rows[0];
