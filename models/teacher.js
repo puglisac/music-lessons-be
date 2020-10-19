@@ -5,11 +5,10 @@ const ExpressError = require("../helpers/expressError");
 const Student = require("./student");
 
 class Teacher {
-	constructor(username, full_name, email, students = []) {
+	constructor(username, full_name, email) {
 		this.username = username;
 		this.full_name = full_name;
 		this.email = email;
-		this.students = students;
 	}
 
 	static async register(username, password, full_name, email) {
@@ -45,7 +44,7 @@ class Teacher {
 
 	static async get(username) {
 		const teacher = await db.query(
-			`SELECT username, full_name, email,
+			`SELECT username, full_name, email
 			FROM teachers 
 			WHERE username = $1`,
 			[username]
@@ -60,15 +59,15 @@ class Teacher {
 	// get students of teacher
 	static async getStudents(teacher_username) {
 		const res = await db.query(
-			`SELECT username, full_name, email,
+			`SELECT username, full_name, email
 			FROM students 
 			WHERE teacher_username = $1`,
 			[teacher_username]
 		);
-		if (!teacher.rows[0]) {
-			throw new ExpressError(`No such user: ${username}`, 404);
+		if (!res.rows[0]) {
+			throw new ExpressError(`No students`, 404);
 		}
-		const students = res.map(s => new Student(s.username, s.full_name, s.email));
+		const students = res.rows.map(s => new Student(s.username, s.full_name, s.email));
 		return students;
 	}
 

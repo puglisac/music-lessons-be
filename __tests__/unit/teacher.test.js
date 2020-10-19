@@ -1,9 +1,9 @@
 const db = require("../../db");
 const Teacher = require("../../models/teacher");
 
-describe("Test user class", function() {
+describe("Test user class", function () {
 
-    beforeEach(async function() {
+    beforeEach(async function () {
         await db.query("DELETE FROM teachers");
 
         let t = await Teacher.register(
@@ -14,18 +14,17 @@ describe("Test user class", function() {
         );
 
     });
-    test("can get teacher by username", async function() {
+    test("can get teacher by username", async function () {
         let t = await Teacher.get("testing");
 
         expect(t).toEqual({
             "username": "testing",
             "full_name": "test teacher",
-            "email": "test@test.com", 
-            "students": expect.any(Array)
+            "email": "test@test.com"
         });
     });
 
-    test("can register a teacher", async function() {
+    test("can register a teacher", async function () {
         let t = await Teacher.register(
             "testteacher",
             "123",
@@ -36,12 +35,12 @@ describe("Test user class", function() {
         expect(t).toEqual({
             "username": "testteacher",
             "full_name": "test teacher2",
-            "email": "test2.user@test.com"    
+            "email": "test2.user@test.com"
         });
     });
 
 
 });
-afterAll(async function() {
+afterAll(async function () {
     await db.end();
 });

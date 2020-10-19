@@ -1,11 +1,11 @@
 const db = require("../../db");
 const Lesson = require("../../models/lesson");
-const Teacher = require("../../models/teacher")
-const Student = require("../../models/student")
+const Teacher = require("../../models/teacher");
+const Student = require("../../models/student");
 
-describe("Test lesson class", function() {
+describe("Test lesson class", function () {
     let testId;
-    beforeEach(async function() {
+    beforeEach(async function () {
         await db.query("DELETE FROM students");
         await db.query("DELETE FROM teachers");
         await db.query("DELETE FROM lessons");
@@ -30,20 +30,18 @@ describe("Test lesson class", function() {
         );
         testId = l.id;
     });
-    test("can get lesson by student and teacher", async function() {
-        let l = await Lesson.getAll("testteacher", "teststudent")
+    test("can get lesson by student and teacher", async function () {
+        let l = await Lesson.getAll("testteacher", "teststudent");
 
         expect(l).toEqual([{
             id: testId,
             date: expect.any(Date),
             teacher_username: "testteacher",
-            student_username: "teststudent" ,
-            homework: [],
-            notes: []
+            student_username: "teststudent"
         }]);
     });
 
-    test("can create a lesson", async function() {
+    test("can create a lesson", async function () {
         let l = await Lesson.create(
             "testteacher",
             "teststudent"
@@ -53,18 +51,18 @@ describe("Test lesson class", function() {
             id: expect.any(Number),
             date: expect.any(Date),
             teacher_username: "testteacher",
-            student_username: "teststudent", 
+            student_username: "teststudent",
             homework: [],
             notes: []
         });
     });
-    test("can get lesson by id", async function() {
+    test("can get lesson by id", async function () {
         let l = await Lesson.getById(testId);
 
         expect(l.id).toEqual(testId);
     });
 
 });
-afterAll(async function() {
+afterAll(async function () {
     await db.end();
 });
