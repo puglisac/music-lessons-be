@@ -7,7 +7,7 @@ const Student = require("../../models/student");
 const Lesson = require("../../models/lesson");
 
 let token;
-let lessonId
+let lessonId;
 describe("lesson Routes Test", function () {
     beforeEach(async function () {
         await db.query("DELETE FROM teachers");
@@ -25,8 +25,8 @@ describe("lesson Routes Test", function () {
             "test student",
             "test@test.com"
         );
-        let l = await Lesson.create("testteacher", "teststudent")
-        lessonId = l.id
+        let l = await Lesson.create("testteacher", "teststudent");
+        lessonId = l.id;
         const res = await request(app).post("/teachers/login").send({
             username: "testteacher",
             password: "123"
@@ -46,8 +46,8 @@ describe("lesson Routes Test", function () {
                     id: lessonId,
                     teacher_username: "testteacher",
                     student_username: "teststudent",
-                    date: expect.any(String), 
-                    homework: expect.any(Array), 
+                    date: expect.any(String),
+                    homework: expect.any(Array),
                     notes: expect.any(Array)
                 }]
             });
@@ -63,18 +63,18 @@ describe("lesson Routes Test", function () {
     describe("post /lessons/:teacher_username/:student_username", function () {
         test("can create new lesson ", async function () {
             const resp = await request(app)
-                .post("/lessons/testteacher/teststudent").send({_token:token})
+                .post("/lessons/testteacher/teststudent").send({ _token: token });
 
             expect(resp.status).toEqual(201);
             expect(resp.body).toEqual({
-                lesson:{
-                id: expect.any(Number),
-                teacher_username: "testteacher",
-                student_username: "teststudent",
-                date: expect.any(String), 
-                homework: expect.any(Array), 
-                notes: expect.any(Array)
-            }
+                lesson: {
+                    id: expect.any(Number),
+                    teacher_username: "testteacher",
+                    student_username: "teststudent",
+                    date: expect.any(String),
+                    homework: expect.any(Array),
+                    notes: expect.any(Array)
+                }
             });
         });
     });
@@ -90,8 +90,8 @@ describe("lesson Routes Test", function () {
                     id: lessonId,
                     teacher_username: "testteacher",
                     student_username: "teststudent",
-                    date: expect.any(String), 
-                    homework: expect.any(Array), 
+                    date: expect.any(String),
+                    homework: expect.any(Array),
                     notes: expect.any(Array)
                 }
             });
@@ -138,8 +138,8 @@ describe("lesson Routes Test", function () {
                     id: lessonId,
                     teacher_username: "testteacher",
                     student_username: "teststudent",
-                    date: expect.any(String), 
-                    homework: expect.any(Array), 
+                    date: expect.any(String),
+                    homework: expect.any(Array),
                     notes: expect.any(Array)
                 }
             });

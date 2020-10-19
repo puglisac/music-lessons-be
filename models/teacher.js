@@ -9,7 +9,6 @@ class Teacher {
 		this.full_name = full_name;
 		this.email = email;
 		this.students = students;
-
 	}
 
 	static async register(username, password, full_name, email) {
@@ -60,8 +59,8 @@ class Teacher {
 		const t = teacher.rows[0];
 		const students = teacher.rows.map(s => {
 			s.student_username,
-			s.student_full_name,
-			s.student_email
+				s.student_full_name,
+				s.student_email;
 		});
 
 		return new Teacher(t.username, t.full_name, t.email, students);
