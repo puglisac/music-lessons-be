@@ -8,11 +8,12 @@
     "examples": [
         {
             "assignment": "this is your assignment",
-            "completed": true
+            "completed": true,
+            "_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFsYW4iLCJpYXQiOjE2MDI2MjIzMzB9.APA3pgVHHW1WcEcEd4De97vjW0lptTr6nzAR3OidSO8"
         }
     ],
     "required": [
-
+        "_token"
     ],
     "properties": {
         "assignment": {
@@ -34,7 +35,17 @@
             "examples": [
                 true
             ]
+        },
+        "_token": {
+            "$id": "#/properties/_token",
+            "type": "string",
+            "title": "The _token schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": "",
+            "examples": [
+                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFsYW4iLCJpYXQiOjE2MDI2MjIzMzB9.APA3pgVHHW1WcEcEd4De97vjW0lptTr6nzAR3OidSO8"
+            ]
         }
     },
-    "additionalProperties": true
+    "additionalProperties": false
 }

@@ -7,23 +7,23 @@
     "default": {},
     "examples": [
         {
-            "assignment": "here is your assignment",
+            "student_username": "username",
             "_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFsYW4iLCJpYXQiOjE2MDI2MjIzMzB9.APA3pgVHHW1WcEcEd4De97vjW0lptTr6nzAR3OidSO8"
         }
     ],
     "required": [
-        "assignment",
+        "student_username",
         "_token"
     ],
     "properties": {
-        "assignment": {
-            "$id": "#/properties/assignment",
+        "student_username": {
+            "$id": "#/properties/student_username",
             "type": "string",
-            "title": "The assignment schema",
+            "title": "The student_username schema",
             "description": "An explanation about the purpose of this instance.",
             "default": "",
             "examples": [
-                "here is your assignment"
+                "username"
             ]
         },
         "_token": {
