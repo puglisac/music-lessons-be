@@ -20,7 +20,8 @@ describe("Test user class", function () {
         expect(t).toEqual({
             "username": "testing",
             "full_name": "test teacher",
-            "email": "test@test.com"
+            "email": "test@test.com",
+            "is_teacher": true
         });
     });
 

@@ -34,7 +34,7 @@ describe("teacher Routes Test", function () {
                     username: "testteacher",
                     full_name: "test teacher",
                     email: "test@test.com",
-                    is_teache: true
+                    is_teacher: true
                 }
             });
         });
@@ -153,7 +153,7 @@ describe("teacher Routes Test", function () {
 
             expect(resp.status).toEqual(200);
             expect(resp.body).toEqual({
-                message: "student added"
+                student: expect.any(Object)
             });
         });
 

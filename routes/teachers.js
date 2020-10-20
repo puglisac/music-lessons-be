@@ -70,7 +70,7 @@ router.patch("/:username/add_student", ensureCorrectUser, jsonValidate(addStuden
 		}
 		student.teacher_username = teacher.username;
 		student.save();
-		return res.json({ message: "student added" });
+		return res.json({ student: student });
 	} catch (e) {
 		return next(e);
 	}
