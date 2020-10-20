@@ -33,7 +33,8 @@ describe("teacher Routes Test", function () {
                 teacher: {
                     username: "testteacher",
                     full_name: "test teacher",
-                    email: "test@test.com"
+                    email: "test@test.com",
+                    is_teache: true
                 }
             });
         });
@@ -116,7 +117,8 @@ describe("teacher Routes Test", function () {
                 teacher: {
                     username: "testteacher",
                     full_name: "new name",
-                    email: "test@test.com"
+                    email: "test@test.com",
+                    is_teacher: true
                 }
             });
         });

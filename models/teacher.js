@@ -9,6 +9,7 @@ class Teacher {
 		this.username = username;
 		this.full_name = full_name;
 		this.email = email;
+		this.is_teacher = true;
 	}
 
 	static async register(username, password, full_name, email) {
