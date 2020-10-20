@@ -71,7 +71,7 @@ router.post("/students/login", jsonValidate(signInSchema), async function (req, 
 /** POST /register - register user: registers, logs in, and returns token.
  
  */
-router.post("/students/signup", jsonValidate(signInSchema), async function (req, res, next) {
+router.post("/students/signup", jsonValidate(userSchema), async function (req, res, next) {
 	try {
 		const { username, password, full_name, email } = req.body;
 		await Student.register(username, password, full_name, email);
@@ -79,7 +79,7 @@ router.post("/students/signup", jsonValidate(signInSchema), async function (req,
 		return res.status(201).json({ token });
 	} catch (err) {
 		if (err.code === "23505") {
-			return next(new ExpressError("Username taken. Please pick another!", 400));
+			return next(new ExpressError("Username or email taken. Please pick another!", 400));
 		}
 		return next(err);
 	}

@@ -11,11 +11,11 @@ const studentRoutes = require("./routes/students");
 const lessonRoutes = require("./routes/lessons");
 const noteRoutes = require("./routes/notes");
 const homeworkRoutes = require("./routes/homework");
-
+const cors = require("cors");
 const app = express();
 
 app.use(express.json());
-
+app.use(cors());
 // add logging system
 app.use(morgan("tiny"));
 
@@ -24,11 +24,11 @@ app.use(authenticateJWT);
 
 // routes
 app.use(authRoutes);
-app.use("/teachers", teacherRoutes)
-app.use("/students", studentRoutes)
-app.use("/lessons", lessonRoutes)
-app.use("/notes", noteRoutes)
-app.use("/homework", homeworkRoutes)
+app.use("/teachers", teacherRoutes);
+app.use("/students", studentRoutes);
+app.use("/lessons", lessonRoutes);
+app.use("/notes", noteRoutes);
+app.use("/homework", homeworkRoutes);
 
 
 /** 404 handler */
