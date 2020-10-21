@@ -7,8 +7,8 @@ const Teacher = require("../models/teacher");
 
 function authenticateJWT(req, res, next) {
     try {
-        const tokenFromBody = req.body._token;
-        const payload = jwt.verify(tokenFromBody, SECRET_KEY);
+        const token = req.body._token || req.query._token;
+        const payload = jwt.verify(token, SECRET_KEY);
         req.user = payload; // create a current user
         return next();
     } catch (err) {
