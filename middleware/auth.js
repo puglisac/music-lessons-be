@@ -42,7 +42,7 @@ function ensureCorrectUser(req, res, next) {
 }
 function ensureTeacherOrStudent(req, res, next) {
     try {
-        if (req.user.username === req.params.teacher_username || req.body.username === req.params.student_username) {
+        if (req.user.username === req.params.teacher_username || req.user.username === req.params.student_username) {
             return next();
         } else {
             return next({ status: 401, message: "Unauthorized" });
@@ -54,6 +54,7 @@ function ensureTeacherOrStudent(req, res, next) {
 }
 async function ensureTeacher(req, res, next) {
     try {
+        console.log("*******", req.params.username, req.user.username);
         if (req.user.username === req.params.teacher_username) {
             return next();
         } else {

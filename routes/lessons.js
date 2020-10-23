@@ -19,7 +19,7 @@ router.get("/:teacher_username/:student_username", ensureTeacherOrStudent, async
 
 /** get lesson by id */
 
-router.get("/:teacher_username/:student_username/:id", ensureTeacher, async function (req, res, next) {
+router.get("/:teacher_username/:student_username/:id", ensureTeacherOrStudent, async function (req, res, next) {
 	try {
 		let lesson = await Lesson.getById(req.params.id);
 		return res.json({ lesson: lesson });
