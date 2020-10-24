@@ -14,7 +14,7 @@ class Lesson {
 
     static async getAll(teacher_username, student_username) {
         const result = await db.query(
-            `SELECT * FROM lessons WHERE teacher_username = $1 AND student_username = $2`, [teacher_username, student_username]);
+            `SELECT * FROM lessons WHERE teacher_username = $1 AND student_username = $2 ORDER BY date DESC`, [teacher_username, student_username]);
         if (result.rows.length === 0) {
             throw new ExpressError(`No Lesson for ${teacher_username} and ${student_username}`, 404);
         };
