@@ -62,7 +62,7 @@ class Teacher {
 		const res = await db.query(
 			`SELECT username, full_name, email
 			FROM students 
-			WHERE teacher_username = $1`,
+			WHERE teacher_username = $1 ORDER BY full_name`,
 			[teacher_username]
 		);
 		if (!res.rows[0]) {
