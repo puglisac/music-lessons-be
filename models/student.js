@@ -57,6 +57,8 @@ class Student {
 
 		return new Student(s.username, s.full_name, s.email, s.teacher_username);
 	}
+
+
 	async save() {
 		await db.query(
 			`UPDATE students SET full_name=$2, email=$3, teacher_username=$4 WHERE username = $1`,

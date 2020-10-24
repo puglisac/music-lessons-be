@@ -62,13 +62,24 @@ class Teacher {
 		const res = await db.query(
 			`SELECT username, full_name, email
 			FROM students 
-			WHERE teacher_username = $1 ORDER BY full_name`,
+			WHERE teacher_username = $1 ORDER BY username`,
 			[teacher_username]
 		);
 		if (!res.rows[0]) {
 			throw new ExpressError(`No students`, 404);
 		}
 		const students = res.rows.map(s => new Student(s.username, s.full_name, s.email));
+		return students;
+	}
+
+	static async search(teacher_username, str) {
+
+		const result = await db.query(
+			`SELECT * FROM students WHERE teacher_username = $1 AND (username ILIKE $2 OR full_name ILIKE $2) ORDER BY username `, [teacher_username, `%${str}%`]);
+		if (result.rows.length === 0) {
+			throw new ExpressError("no results", 404);
+		};
+		const students = result.rows.map(s => new Student(s.username, s.full_name, s.email));
 		return students;
 	}
 

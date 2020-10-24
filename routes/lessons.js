@@ -10,6 +10,11 @@ const { ensureLoggedIn, ensureTeacherOrStudent, ensureTeacher } = require("../mi
 router.get("/:teacher_username/:student_username", ensureTeacherOrStudent, async function (req, res, next) {
 	const { teacher_username, student_username } = req.params;
 	try {
+		if (req.query.search && req.query.search != "") {
+			console.log("req.params.username");
+			let lessons = await Lesson.search(teacher_username, student_username, req.query.search);
+			return res.json({ lesons: lessons });
+		}
 		const lessons = await Lesson.getAll(teacher_username, student_username);
 		return res.json({ lessons: lessons });
 	} catch (e) {
@@ -21,6 +26,7 @@ router.get("/:teacher_username/:student_username", ensureTeacherOrStudent, async
 
 router.get("/:teacher_username/:student_username/:id", ensureTeacherOrStudent, async function (req, res, next) {
 	try {
+
 		let lesson = await Lesson.getById(req.params.id);
 		return res.json({ lesson: lesson });
 	} catch (e) {

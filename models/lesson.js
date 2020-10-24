@@ -21,16 +21,15 @@ class Lesson {
         return result.rows.map(l => new Lesson(l.id, l.date, l.teacher_username, l.student_username));
     }
 
-    // static async search(str = "", min = 0, equity = 0) {
+    static async search(teacher_username, student_username, str) {
 
-    //     const result = await db.query(
-    //         `SELECT * FROM lesson_plans WHERE 
-    //             (title ILIKE $1 OR company_handle ILIKE $1) AND salary >= $2 AND equity >= $3`, [`%${str}%`, min, equity]);
-    //     if (result.rows.length === 0) {
-    //         throw new ExpressError("no results", 400)
-    //     };
-    //     return result.rows.map(j => new Job(j.id, j.title, j.salary, j.equity, j.company_handle, j.date_posted));
-    // }
+        const result = await db.query(
+            `SELECT * FROM lessons WHERE teacher_username = $1 AND student_username = $2 AND date ILIKE $1 ORDER BY date DESC`, [teacher_username, student_username, `%${str}%`]);
+        if (result.rows.length === 0) {
+            throw new ExpressError("no results", 400);
+        };
+        return result.rows.map(l => new Lesson(l.id, l.date, l.teacher_username, l.student_username));
+    }
 
     /** get lesson by id: returns lesson, notes, homework */
 
