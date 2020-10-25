@@ -11,7 +11,6 @@ router.get("/:teacher_username/:student_username", ensureTeacherOrStudent, async
 	const { teacher_username, student_username } = req.params;
 	try {
 		if (req.query.search && req.query.search != "") {
-			console.log("req.params.username");
 			let lessons = await Lesson.search(teacher_username, student_username, req.query.search);
 			return res.json({ lesons: lessons });
 		}
