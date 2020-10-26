@@ -1,177 +1,166 @@
-## Jobly
+## Music Lessons
 
-Jobly is a job-search API. Users can search for jobs and companies as well as apply for jobs. Admins can create new jobs, create new companies, and update job application status.
+This is a RESTful API created for private music teachers.  Teachers and students can create an account and keep track of lessons.  Teachers can add lessons with notes and homework assignments that the students can see.
 
 ## Endpoints
 
-### Companies
+### Lessons
 
-- **GET /companies**  
-  Return the handle and name for all of the company objects. It also allows for the following query string parameters
+- **GET lessons/:teacher_username/:student_username**  
+returns all lessons for a teacher and student
 
 ```
-/companies/
+/lessons/teacher/student
  body: {"_token": token}
 
 ```
 
-**search**. If the query string parameter is passed, a filtered list of handles and names are displayed based on the search term and if the name includes it.
+**search** If the query string parameter is passed, a filtered list of lessons matching the date requested is returned.
 
 ```
-/companies/?search=apple
-body: {"_token": token}
+/lessons/teacher/student/?search=05/09/2020
+body: {
+	"search":"05/09/2020"
+	"_token": token
+}
 ```
 
-**min_employees**. If the query string parameter is passed, titles and company handles are displayed that have a number of employees greater than the value of the query string parameter.
+- **POST /lessons/:teacher_username/:student_username**  
+create a new lesson for a teacher and student.
 
 ```
-/companies/?min_employees=100
-body: {"_token": token}
-
+/lessons/teacher/student
+ body: {"_token": teacherToken} 
 ```
 
-**max_employees**. If the query string parameter is passed, a list of titles and company handles are displayed that have a number of employees less than the value of the query string parameter.
-If the min_employees parameter is greater than the max_employees parameter, respond with a 400 status and a message notifying that the parameters are incorrect.
+- **GET /lessons/:teacher_username/:student_username/:id**  
+  Return a single lesson found by its id.
 
 ```
-/companies/?max_employees=200
-body: {"_token": token}
-
-```
-
-- **POST /companies**
-  Create a new company and return the newly created company.
-
-```
-/companies/
-body: { "handle": "apple",
-           "name": "apple computers",
-           "num_employees": 120,
-           "description": "we make computers",
-           "logo_url": "https://image",
-           "_token": adminToken}
-```
-
-- **GET /companies/[handle]**  
-  Return a single company found by its id.
-
-```
-/companies/apple
+/lessons/teacher/student/1
 body: {"_token": token}
 
 ```
 
-- **PATCH /companies/[handle]**  
-  Update an existing company and return the updated company.
+- **PATCH /lessons/:teacher_username/:student_username/:id**  
+  Update an existing lesson and return the updated lesson.
 
 ```
-/companies/apple
+/lessons/teacher/student/1
  body: {
-           "name": "new name",
-           "num_employees": 120,
-           "description": "we make computers",
-           "logo_url": "https://newimage",
-           "_token": adminToken}
+		"date":"2012-04-21T18:25:43-05:00",
+		"_token": teacherToken
+		}
 ```
 
-- **DELETE /companies/[handle]**  
-  Remove an existing company and return a message.
+- **DELETE /lessons/:teacher_username/:student_username/:id**  
+  Remove an existing lesson and return a message.
 
 ```
-/companies/apple
- body: {"_token": adminToken}
+/lessons/teacher/student/1
+ body: {"_token": teacherToken}
 ```
 
-### Jobs
+### Homework
 
-- **POST /jobs**  
-  This route creates a new job and returns a new job.
-
-```
-/jobs/
-body: {"title": "new job",
-          "salary": 20000.00,
-          "equity": 0.3,
-          "company_handle": "apple",
-          "_token": adminToken}
-```
-
-- **POST /jobs/[id]/apply**  
-  Adds job to logged-in user's applications with state of application. Accepted states: intereste, applied, accepted, rejected.
+- **GET homework/:teacher_username/:student_username/:lesson_id**  
+returns all homework for a lesson
 
 ```
-/jobs/[id]/apply
-body: {"state":"applied",
-		   "_token": token}
-```
-
-- **PATCH /jobs/[id]/apply**  
-  Updates state of application. Accepted states: intereste, applied, accepted, rejected.
+/homework/teacher/student/1
+ body: {"_token": token}
 
 ```
-/jobs/[id]/apply
-body: {"username": "user",
-			"state":"accepted",
-			"_token": adminToken}
-```
 
-- **GET /jobs**  
-  This route lists all the titles and company handles for all jobs, ordered by the most recently posted jobs. It also allows for the following query string parameters.
+- **POST /homework/:teacher_username/:student_username/:lesson_id**  
+creates new homework for a lesson.
 
 ```
-/jobs/
+/homework/teacher/student/1
+ body: {
+ 		"assignment":"homework assignment",
+ 		"_token": teacherToken
+ 		} 
+```
+
+- **GET /homework/:teacher_username/:student_username/:lesson_id/:id**  
+  Return a single homework found by its id.
+
+```
+/lessons/teacher/student/1/1
 body: {"_token": token}
 
 ```
 
-**search**: If the query string parameter is passed, a filtered list of titles and company handles are displayed based on the search term and if the job title includes it.
+- **PATCH /homework/:teacher_username/:student_username/:lesson_id/:id**  
+  Update an existing homework and return the updated lesson.
 
 ```
-/jobs/?search=apple
+/lessons/teacher/student/1
+ body: {
+		"assignment":"new assignment text",
+		"_token": teacherToken
+		}
+```
+
+- **DELETE /homework/:teacher_username/:student_username/:lesson_id/:id**  
+  Remove an existing homework and return a message.
+
+```
+/lessons/teacher/student/1/1
+ body: {"_token": teacherToken}
+```
+
+### Notes
+
+- **GET notes/:teacher_username/:student_username/:lesson_id**  
+returns all notes for a lesson
+
+```
+/notes/teacher/student/1
+ body: {"_token": token}
+
+```
+
+- **POST /notes/:teacher_username/:student_username/:lesson_id**  
+creates new note for a lesson.
+
+```
+/notes/teacher/student/1
+ body: {
+ 		"note":"note text",
+ 		"_token": teacherToken
+ 		} 
+```
+
+- **GET /notes/:teacher_username/:student_username/:lesson_id/:id**  
+  Return a single note found by its id.
+
+```
+/notes/teacher/student/1/1
 body: {"_token": token}
-```
-
-**min_salary**: If the query string parameter is passed, titles and company handles are displayed that have a salary greater than the value of the query string parameter.
 
 ```
-/jobs/?min_salary=40000
- body: {"_token": token}
-```
 
-**min_equity**: If the query string parameter is passed, a list of titles and company handles are displayed that have an equity greater than the value of the query string parameter.
+- **PATCH /notes/:teacher_username/:student_username/:lesson_id/:id**  
+  Update an existing note and return the updated lesson.
 
 ```
-/jobs/?min_equity=0.3
- body: {"_token": token}
+/notes/teacher/student/1
+ body: {
+		"note":"new note text",
+		"_token": teacherToken
+		}
 ```
 
-- **GET /jobs/[id]**  
-  This route shows information about a specific job including a key of company which is an object that contains all of the information about the company associated with it.
+- **DELETE /notes/:teacher_username/:student_username/:lesson_id/:id**  
+  Remove an existing note and return a message.
 
 ```
-/jobs/apple
- body: {"_token": token}
+/notes/teacher/student/1/1
+ body: {"_token": teacherToken}
 ```
 
-- **PATCH /jobs/[id]**  
-  This route updates a job by its ID and returns an the newly updated job.
-
-```
-/jobs/[id]
-body: {"title": "new title",
-          "salary": 40000.00,
-          "equity": 0.3,
-          "company_handle": "apple",
-          "_token": adminToken}
-```
-
-- **DELETE /jobs/[id]**  
-  This route deletes a job and returns a message.
-
-```
-/jobs/[id]
-body: {"_token": adminToken}
-```
 
 ### Users
 
