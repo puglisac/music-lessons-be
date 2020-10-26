@@ -12,7 +12,7 @@ router.get("/:teacher_username/:student_username", ensureTeacherOrStudent, async
 	try {
 		if (req.query.search && req.query.search != "") {
 			let lessons = await Lesson.search(teacher_username, student_username, req.query.search);
-			return res.json({ lesons: lessons });
+			return res.json({ lessons: lessons });
 		}
 		const lessons = await Lesson.getAll(teacher_username, student_username);
 		return res.json({ lessons: lessons });

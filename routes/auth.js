@@ -43,7 +43,7 @@ router.post("/teachers/signup", jsonValidate(userSchema), async function (req, r
 		return res.status(201).json({ token });
 	} catch (err) {
 		if (err.code === "23505") {
-			return next(new ExpressError("Username taken. Please pick another!", 400));
+			return next(new ExpressError("Username/email taken. Please pick another!", 400));
 		}
 		return next(err);
 	}
@@ -79,7 +79,7 @@ router.post("/students/signup", jsonValidate(userSchema), async function (req, r
 		return res.status(201).json({ token });
 	} catch (err) {
 		if (err.code === "23505") {
-			return next(new ExpressError("Username or email taken. Please pick another!", 400));
+			return next(new ExpressError("Username/email taken. Please pick another!", 400));
 		}
 		return next(err);
 	}

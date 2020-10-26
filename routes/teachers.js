@@ -54,7 +54,6 @@ router.patch("/:username", ensureCorrectUser, jsonValidate(updateTeacherSchema),
 router.get("/:username/students", ensureCorrectUser, async function (req, res, next) {
 	try {
 		if (req.query.search && req.query.search != "") {
-			console.log("req.params.username");
 			let students = await Teacher.search(req.params.username, req.query.search);
 			return res.json({ students: students });
 		}
