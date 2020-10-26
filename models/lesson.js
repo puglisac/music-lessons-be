@@ -22,9 +22,7 @@ class Lesson {
     }
 
     static async search(teacher_username, student_username, str) {
-
         const result = await db.query(
-
             `SELECT * FROM lessons WHERE teacher_username = $1 AND student_username = $2 AND DATE_TRUNC('day', date) = $3 ORDER BY date DESC`, [teacher_username, student_username, str]);
         if (result.rows.length === 0) {
             throw new ExpressError("no results", 404);
