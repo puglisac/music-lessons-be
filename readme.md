@@ -162,63 +162,135 @@ body: {"_token": token}
 ```
 
 
-### Users
+### Students
 
-- **POST /users**  
-  Create a new user and return a JWT which includes the username and whether or not the user is an admin.
+- **POST /students/signup**  
+  Create a new student and return a JWT which includes the username.
 
 ```
-/users
-body: {"username": "user",
-          "password": "password",
-          "first_name": "user",
-          "last_name": "name",
-          "email": "test.user@email.com",
-          "photo_url": "https://image",
-          "is_admin": false}
+/students/signup
+body: {
+		"username": "student",
+		"password": "password", 
+		"full_name": "Full Name",
+		"email": "email@email.com"
+		}
 ```
 
 - **POST /login**  
-  Authenticate a user and return a JSON Web Token which contains a payload with the username and is_admin values.
+  Authenticate a student and return a JSON Web Token which contains a payload with the username.
 
 ```
-/users
-body: {"username": "newuser",
-          "password": "password"}
+/students/login
+body: {
+		"username": "student",
+  		"password": "password"
+  		}
 ```
 
-- **GET /users**  
-  Return the username, first_name, last_name and email of the user objects.
+- **GET /students/:username**  
+  Return the username, full_name, email and teacher_username of a student.
 
 ```
-/users
-```
-
-- **GET /users/[username]**  
-  Return all the fields for a user excluding the password and an array of job applications.
-
-```
-/users/username
-```
-
-- **PATCH /users/[username]**  
-  Update an existing user and return the updated user excluding the password.
-
-```
-/users/username
-body: {"first_name": "new",
-          "last_name": "name",
-          "email": "test.user@email.com",
-          "photo_url": "https://newimage",
-          "is_admin": true}
-```
-
-- **DELETE /users/[username]**  
-  Remove an existing user and return a message.
-
-```
-/users/username
+/students/student
 body: {"_token": token}
+```
+
+- **PATCH /students/:username**  
+  Update an existing student and return the updated studnet excluding the password.
+
+```
+/students/student
+body: {
+		"full_name": "new name",
+       "email": "test.user@email.com",
+		"teacher_username": "teacher",
+		"_token": token
+		}
+```
+
+- **DELETE /students/:username**  
+  Remove an existing student and return a message.
+
+```
+/students/student
+body: {"_token": token}
+```
+
+### Teachers
+
+- **POST /teachers/signup**  
+  Create a new teacher and return a JWT which includes the username.
+
+```
+/teachers/signup
+body: {
+		"username": "teacher",
+		"password": "password", 
+		"full_name": "Full Name",
+		"email": "email@email.com"
+		}
+```
+
+- **POST /teachers/login**  
+  Authenticate a teacher and return a JSON Web Token which contains a payload with the username.
+
+```
+/teachers/login
+body: {
+		"username": "teacher",
+  		"password": "password"
+  		}
+```
+
+- **GET /teachers/:username**  
+  Return the username, full_name, email and teacher_username of a teacher.
+
+```
+/teachers/teacher
+body: {"_token": token}
+```
+
+- **PATCH /teachers/:username**  
+  Update an existing teacher and return the updated teacher excluding the password.
+
+```
+/teachers/teacher
+body: {
+		"full_name": "new name",
+       "email": "test.user@email.com",
+		"teacher_username": "teacher",
+		"_token": token
+		}
+```
+
+- **DELETE /teachers/:username**  
+  Remove an existing teacher and return a message.
+
+```
+/teachers/:username
+body: {"_token": token}
+```
+- **PATCH /teachers/:username/add_student**  
+  Add an existing student to the teacher.  Updates the "teacher_username" column of the student.
+
+```
+/teachers/teacher/add_student
+body: {
+		"student_username": "student",
+		"_token": token
+		}
+```
+
+- **PATCH /teachers/:username/remove_student**  
+  Remove an existing student from the teacher.  Updates the "teacher_username" column of the student.
+
+```
+/teachers/teacher/remove_student
+body: {
+		"student_username": "student",
+		"_token": token
+		}
 ```
 
 ## Running Tests
@@ -229,25 +301,18 @@ From the command line:
 
 ### Tokens
 
-The following routes need a valid JWT:
+All routes except the login and signup routes require a valid JWT.
 
-- GET /jobs
-- GET /jobs/[id]
-- POST /jobs/apply
-- GET /companies
-- GET /companies/[handle]
-- PATCH /users/[username]
-- DELETE /users/[username]
+The following routes require the token to be from a teacher:
 
-The following routes need a valid JWT AND the user must be an admin:
-
-- POST /companies
-- POST /jobs
-- PATCH /jobs/apply
-- PATCH /companies/[handle]
-- DELETE /companies/[handle]
-- PATCH /jobs/[id]
-- DELETE /jobs/[id]
+- POST /lessons/:teacher_username/:student_username/
+- PATCH /lessons/:teacher_username/:student_username/:id
+- DELETE /lessons/:teacher_username/:student_username/:id
+- POST /homewok/:teacher_username/:student_username/:lesson_id
+- DELETE /lessons/:teacher_username/:student_username/:lesson_id/:id
+- POST /notes/:teacher_username/:student_username/:lesson_id
+- PATCH /notes/:teacher_username/:student_username/:lesson_id/:id
+- DELETE /notes/:teacher_username/:student_username/lesson_id/:id
 
 ## Built Using
 
