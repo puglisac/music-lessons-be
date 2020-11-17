@@ -293,6 +293,37 @@ body: {
 		}
 ```
 
+## Installation
+To install, follow these steps:
+
+Via Downloading from GitHub:
+
+Download this repository onto your machine by clicking the "Clone or Download" button or Fork the repo into your own Github account
+Download and extract the zip file to a directory of your choice.  
+
+Via command line:
+
+`$ git clone https://github.com/puglisac/music-lessons-be.git`  
+
+Install dependencies
+
+`npm install`  
+
+[Install PostgreSQL](https://www.postgresql.org/download/) if you do not have it.
+
+Create and setup a database and test database
+```
+$ createdb music-lessons
+$ psql music-lessons < data.sql
+$ createdb music-lessons-test
+$ psql music-lessons-test < data.sql
+```
+Start the server on port 5000:
+
+```
+$ node server.js
+```
+
 ## Running Tests
 
 From the command line:
