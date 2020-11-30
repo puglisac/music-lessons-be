@@ -4,6 +4,8 @@ This is a RESTful API created for private music teachers.  Teachers and students
 
 ## Endpoints
 
+Base URL: https://music-lessons-api.herokuapp.com/
+
 ### Lessons
 
 - **GET lessons/:teacher_username/:student_username**  
